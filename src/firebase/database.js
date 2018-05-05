@@ -7,5 +7,5 @@ export const logStuff = () => {
 }
 
 export const addQuestion = (questionObj) => {
-  database.ref('questions/').push(questionObj);
+  database.ref('questions/'+ questionObj.category).push(questionObj);
 }

@@ -3,13 +3,16 @@ import { database } from '../firebase';
 import './css/addquestion.css';
 
 class QuestionObject {
-  constructor(question, alt1, alt2, alt3, alt4, answer){
+  constructor(question, alt1, alt2, alt3, alt4, answer, category){
     this.question = question;
-    this.alt1 = alt1;
-    this.alt2 = alt2;
-    this.alt3 = alt3;
-    this.alt4 = alt4;
+    this.alternatives = {
+      alt1: alt1,
+      alt2: alt2,
+      alt3: alt3,
+      alt4: alt4
+    }
     this.answer = answer;
+    this.category = category;
   }
   push(){
     database.addQuestion(this);
@@ -30,7 +33,8 @@ class Addquestion extends Component {
           alt2: '',
           alt3: '',
           alt4: '',
-          answer: ''
+          answer: '',
+          category: ''
         };
     }
 
@@ -45,13 +49,15 @@ class Addquestion extends Component {
         this.setState({alt3: event.target.value})
       } else if (type === 'alt4'){
         this.setState({alt4: event.target.value})
+      } else if (type === 'category'){
+        this.setState({category: event.target.value})
       }
       console.log('Input change!');
     }
 
     addQuestion = event => {
 
-      let question = new QuestionObject(this.state.question, this.state.alt1, this.state.alt2, this.state.alt3, this.state.alt4);
+      let question = new QuestionObject(this.state.question, this.state.alt1, this.state.alt2, this.state.alt3, this.state.alt4, this.state.answer, this.state.category);
       question.push();
 
       this.setState({question: ''});
@@ -59,13 +65,19 @@ class Addquestion extends Component {
       this.setState({alt2: ''});
       this.setState({alt3: ''});
       this.setState({alt4: ''});
+      this.setState({category: ''});
 
       console.log('Question added!', question);
     }
 
     setAnswer = (event, answer) => {
       this.setState({answer: answer});
-      event.target.className = 'answer';
+    }
+
+    answerClass = (type) => {
+      if(this.state.answer === type){
+        return 'answer';
+      }
     }
 
     /* Return */
@@ -73,28 +85,33 @@ class Addquestion extends Component {
       if(this.props.doRender){
         return (
           <div>
-            <h1> Skapa fråga! </h1>
+            <h1> Create a question! </h1>
             <div>
-              <input onChange={ event => this.handleInput(event, 'question')} value={this.state.question} type="text" placeholder="Fråga.."/>
-
               <div className="answer">
-                <input onChange={ event => this.handleInput(event, 'alt1')} value={this.state.alt1} type="text" placeholder="Svar 1"/>
-                <button onClick={event => this.setAnswer(event, 'alt1')}><i className="material-icons">check</i></button>
+                <input onChange={ event => this.handleInput(event, 'question')} value={this.state.question} type="text" placeholder="Question.."/>
+              </div>
+              <div className="answer">
+                <input onChange={ event => this.handleInput(event, 'alt1')} value={this.state.alt1} type="text" placeholder="Answer 1"/>
+                <button className={this.answerClass('alt1')} onClick={event => this.setAnswer(event, 'alt1')}><i className="material-icons">{this.state.answer === 'alt1' ? 'check' : 'clear'}</i></button>
               </div>
 
               <div className="answer">
-                <input onChange={ event => this.handleInput(event, 'alt2')} value={this.state.alt2} type="text" placeholder="Svar 2"/>
-                <button onClick={event => this.setAnswer(event, 'alt2')} ><i className="material-icons">check</i></button>
+                <input onChange={ event => this.handleInput(event, 'alt2')} value={this.state.alt2} type="text" placeholder="Answer 2"/>
+                <button className={this.answerClass('alt2')} onClick={event => this.setAnswer(event, 'alt2')} ><i className="material-icons">{this.state.answer === 'alt2' ? 'check' : 'clear'}</i></button>
               </div>
 
               <div className="answer">
-                <input onChange={ event => this.handleInput(event, 'alt3')} value={this.state.alt3} type="text" placeholder="Svar 3"/>
-                <button onClick={event => this.setAnswer(event, 'alt3')} ><i className="material-icons">check</i></button>
+                <input onChange={ event => this.handleInput(event, 'alt3')} value={this.state.alt3} type="text" placeholder="Answer 3"/>
+                <button className={this.answerClass('alt3')} onClick={event => this.setAnswer(event, 'alt3')} ><i className="material-icons">{this.state.answer === 'alt3' ? 'check' : 'clear'}</i></button>
               </div>
 
               <div className="answer">
-              <input onChange={ event => this.handleInput(event, 'alt4')} value={this.state.alt4} type="text" placeholder="Svar 4"/>
-              <button onClick={event => this.setAnswer(event, 'alt4')}><i className="material-icons">check</i></button>
+                <input onChange={ event => this.handleInput(event, 'alt4')} value={this.state.alt4} type="text" placeholder="Answer 4"/>
+                <button className={this.answerClass('alt4')} onClick={event => this.setAnswer(event, 'alt4')}><i className="material-icons">{this.state.answer === 'alt4' ? 'check' : 'clear'}</i></button>
+              </div>
+
+              <div className="answer">
+                <input onChange={ event => this.handleInput(event, 'category')} value={this.state.category} type="text" placeholder="Category" />
               </div>
 
               <br/>

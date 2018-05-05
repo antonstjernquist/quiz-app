@@ -75,13 +75,16 @@ class App extends Component {
     // });
   }
 
+  toggleLoadingState = () => {
+    this.setState({loading: !this.state.loading});
+  }
 
 
   render() {
     return (
       <div className="App">
-        <Loading loading={this.state.loading}/>
-        <Header loggedin={this.state.loggedin} user={this.state.user} />
+        <Loading loading={this.state.loading} />
+        <Header loggedin={this.state.loggedin} user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
         <h1> Firebase example in React</h1>
         <button onClick={this.handeLoginClick.bind(this)} > {this.logText()} </button>
         <button onClick={this.handleQuestionRender.bind(this)} > New question </button>
