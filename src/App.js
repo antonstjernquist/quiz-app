@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { auth, database } from './firebase';
 import Header from './components/Header.js';
+import Loading from './components/loading.js';
 import Addquestion from './components/Addquestion.js';
 
 
@@ -15,7 +16,8 @@ class App extends Component {
     this.state = {
       loggedin: false,
       user: null,
-      renderQuestion: false
+      renderQuestion: false,
+      loading: false
     }
 
     /* Auth */
@@ -38,6 +40,8 @@ class App extends Component {
       this.setState({loggedin: false})
       this.setState({user: null})
     } else {
+      // Start loading
+      this.setState({loading: true});
       auth.doLogInWithGoogle().then(function(result) {
 
       // This gives you a Google Access Token. You can use it to access the Google API.
@@ -47,6 +51,9 @@ class App extends Component {
 
       prevState.setState({ loggedin: true })
       prevState.setState({ user: user })
+
+      // Remove loading
+      prevState.setState({ loading: false })
 
       /* Log it for the lulz */
       console.log('Data: ', {
@@ -73,6 +80,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <Loading loading={this.state.loading}/>
         <Header loggedin={this.state.loggedin} user={this.state.user} />
         <h1> Firebase example in React</h1>
         <button onClick={this.handeLoginClick.bind(this)} > {this.logText()} </button>
