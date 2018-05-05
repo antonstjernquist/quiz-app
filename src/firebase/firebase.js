@@ -18,7 +18,8 @@ const auth = firebase.auth();
 const database = firebase.database();
 
 const providerData = {
-  google: new firebase.auth.GoogleAuthProvider()
+  google: new firebase.auth.GoogleAuthProvider(),
+  facebook: new firebase.auth.FacebookAuthProvider()
 }
 
 export {

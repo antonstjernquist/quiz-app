@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Aclonica|Open+Sans');
+
+input:first-child {
+  margin-top: 25px;
+}
+
+input {
+  border: none;
+  margin: 5px 15px;
+  padding: 25px 20px;
+  width: 50%;
+  font-size: 1em;
+}
+
+
+div.answer > button {
+  padding: 4px 5px 2px 6px;
+  border-radius: 4px;
+}
+
+div.answer > button.answer {
+  background-color: #777;
+}
+
+div.answer {
+  width: 60%;
+  margin: 0px auto;
+}
