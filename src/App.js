@@ -26,7 +26,7 @@ class App extends Component {
   }
 
   logText(){
-    return this.state.loggedin ? 'Logga ut' : 'Logga in';
+    return this.state.user ? 'Logout' : 'Login';
   }
   handleQuestionRender(){
     this.setState({renderQuestion: !this.state.renderQuestion});
@@ -37,7 +37,6 @@ class App extends Component {
 
     if(this.state.loggedin){
       auth.doSignOut();
-      this.setState({loggedin: false})
       this.setState({user: null})
     } else {
       // Start loading
@@ -49,7 +48,6 @@ class App extends Component {
       // The signed-in user info.
       var user = result.user;
 
-      prevState.setState({ loggedin: true })
       prevState.setState({ user: user })
 
       // Remove loading
@@ -84,7 +82,7 @@ class App extends Component {
     return (
       <div className="App">
         <Loading loading={this.state.loading} />
-        <Header loggedin={this.state.loggedin} user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
+        <Header user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
         <h1> Firebase example in React</h1>
         <button onClick={this.handeLoginClick.bind(this)} > {this.logText()} </button>
         <button onClick={this.handleQuestionRender.bind(this)} > New question </button>

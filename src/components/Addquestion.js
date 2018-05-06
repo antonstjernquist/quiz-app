@@ -55,17 +55,22 @@ class Addquestion extends Component {
       console.log('Input change!');
     }
 
-    addQuestion = event => {
-
-      let question = new QuestionObject(this.state.question, this.state.alt1, this.state.alt2, this.state.alt3, this.state.alt4, this.state.answer, this.state.category);
-      question.push();
-
+    clearInputs = () => {
       this.setState({question: ''});
       this.setState({alt1: ''});
       this.setState({alt2: ''});
       this.setState({alt3: ''});
       this.setState({alt4: ''});
+      this.setState({answer: ''});
       this.setState({category: ''});
+    }
+
+    addQuestion = event => {
+
+      let question = new QuestionObject(this.state.question, this.state.alt1, this.state.alt2, this.state.alt3, this.state.alt4, this.state.answer, this.state.category);
+      question.push();
+
+      this.clearInputs();
 
       console.log('Question added!', question);
     }
