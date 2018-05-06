@@ -4,13 +4,10 @@ import { auth, database } from './firebase';
 import Header from './components/Header.js';
 import Loading from './components/loading.js';
 import Addquestion from './components/Addquestion.js';
+import Tabs from './components/Tabs.js';
 
 
 class App extends Component {
-
-
-
-
   constructor(props){
     super(props);
     this.state = {
@@ -18,7 +15,7 @@ class App extends Component {
       user: null,
       renderQuestion: false,
       loading: false
-    }
+    };
 
     /* Auth */
     auth.onAuthStateChanged(this);
@@ -81,10 +78,12 @@ class App extends Component {
 
 
   render() {
+    const tabs = ['tävla', 'highscore', 'profil'];
     return (
       <div className="App">
         <Loading loading={this.state.loading} />
         <Header loggedin={this.state.loggedin} user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
+        <Tabs tabs={tabs} />
         <h1> Firebase example in React</h1>
         <button onClick={this.handeLoginClick.bind(this)} > {this.logText()} </button>
         <button onClick={this.handleQuestionRender.bind(this)} > New question </button>

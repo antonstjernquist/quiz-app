@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 
-var config = {
+const config = {
   apiKey: "AIzaSyC0cHbN-y4pWjfekTuoGlt1KKlMxYFUS6c",
   authDomain: "quiz-app-cf8b3.firebaseapp.com",
   databaseURL: "https://quiz-app-cf8b3.firebaseio.com",

@@ -1,0 +1,16 @@
+.quizCard-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.chooseCategory {
+    display: inline-block;
+    margin: 0 5px 0 0 ;
+}
+.chooseCategory-wrapper {
+    padding: 20px 0;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+    background-color: #369ccf;
+    width: 800px;
+    margin: 0 auto;
+}
