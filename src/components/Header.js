@@ -27,7 +27,7 @@ class Header extends Component {
 
               <img alt="You" src={user.photoURL}/>
 
-              <p> { user.displayName }</p>
+              <p className="link" onClick={this.props.toggleChangeUsername}> { user.username }</p>
               <div className="divider">&nbsp;</div>
               <p onClick={auth.doSignOut} className="link"> Logga ut </p>
             </div>

@@ -3,6 +3,7 @@ import './App.css';
 import { auth, database } from './firebase';
 import Header from './components/Header.js';
 import Loading from './components/loading.js';
+import CreateUser from './components/CreateUser.js';
 import Addquestion from './components/Addquestion.js';
 import Tabs from './components/Tabs.js';
 
@@ -14,7 +15,8 @@ class App extends Component {
       loggedin: false,
       user: null,
       renderQuestion: false,
-      loading: false
+      loading: false,
+      changeUsername: false
     };
 
     /* Auth */
@@ -23,7 +25,7 @@ class App extends Component {
   }
 
   logText(){
-    return this.state.loggedin ? 'Logga ut' : 'Logga in';
+    return this.state.user ? 'Logout' : 'Login';
   }
   handleQuestionRender(){
     this.setState({renderQuestion: !this.state.renderQuestion});
@@ -32,7 +34,7 @@ class App extends Component {
   handeLoginClick(e){
     let prevState = this;
 
-    if(this.state.loggedin){
+    if(this.state.user){
       auth.doSignOut();
       this.setState({loggedin: false})
       this.setState({user: null})
@@ -76,18 +78,27 @@ class App extends Component {
     this.setState({loading: !this.state.loading});
   }
 
+  setUser = user => {
+    this.setState({user: user});
+  }
+
+  toggleChangeUsername = () => {
+    console.log('State now is: ', this.state.changeUsername);
+    this.setState({changeUsername: !this.state.changeUsername});
+  }
 
   render() {
     const tabs = ['tävla', 'highscore', 'profil'];
     return (
       <div className="App">
         <Loading loading={this.state.loading} />
-        <Header loggedin={this.state.loggedin} user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
+        <CreateUser toggleChangeUsername={this.toggleChangeUsername} doRender={this.state.changeUsername} setUser={this.setUser} user={this.state.user} />
+        <Header toggleChangeUsername={this.toggleChangeUsername} user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
+        <h1> Quiz app or something</h1>
         <Tabs tabs={tabs} />
-        <h1> Firebase example in React</h1>
         <button onClick={this.handeLoginClick.bind(this)} > {this.logText()} </button>
         <button onClick={this.handleQuestionRender.bind(this)} > New question </button>
-        <Addquestion doRender={this.state.renderQuestion} />
+        <Addquestion user={this.state.user} doRender={this.state.renderQuestion} />
       </div>
     );
   }

@@ -19,3 +19,15 @@ export function getQuestions() {
     console.log("FB Snapshot:", val);
     return val;
 }
+
+export const checkName = () => {
+  return database.ref('users/').once('value');
+}
+
+export const createUser = user => {
+  database.ref('users/' + user.uid).set(user);
+}
+
+export const retrieveUser = uid => {
+  return database.ref('users/' + uid).once('value');
+}

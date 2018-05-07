@@ -3,7 +3,7 @@ import { database } from '../firebase';
 import './css/addquestion.css';
 
 class QuestionObject {
-  constructor(question, alt1, alt2, alt3, alt4, answer, category){
+  constructor(question, alt1, alt2, alt3, alt4, answer, category, creator){
     this.question = question;
     this.alternatives = {
       alt1: alt1,
@@ -12,7 +12,8 @@ class QuestionObject {
       alt4: alt4
     }
     this.answer = answer;
-    this.category = category;
+    this.category = category.toLowerCase();
+    this.creator = creator;
   }
   push(){
     database.addQuestion(this);
@@ -55,17 +56,22 @@ class Addquestion extends Component {
       console.log('Input change!');
     }
 
-    addQuestion = event => {
-
-      let question = new QuestionObject(this.state.question, this.state.alt1, this.state.alt2, this.state.alt3, this.state.alt4, this.state.answer, this.state.category);
-      question.push();
-
+    clearInputs = () => {
       this.setState({question: ''});
       this.setState({alt1: ''});
       this.setState({alt2: ''});
       this.setState({alt3: ''});
       this.setState({alt4: ''});
+      this.setState({answer: ''});
       this.setState({category: ''});
+    }
+
+    addQuestion = event => {
+
+      let question = new QuestionObject(this.state.question, this.state.alt1, this.state.alt2, this.state.alt3, this.state.alt4, this.state.answer, this.state.category, this.props.user);
+      question.push();
+
+      this.clearInputs();
 
       console.log('Question added!', question);
     }
