@@ -82,7 +82,7 @@ class CreateUser extends Component {
 
     controlName(username){
       username = username.toLowerCase();
-      if(typeof username != 'string'){
+      if(typeof username !== 'string'){
         return false;
       } else if(username.length < 3){
         return false;
@@ -102,7 +102,6 @@ class CreateUser extends Component {
         if(!this.props.user.username){
           return (
             <div className="createUserDiv">
-
               <h1>Welcome to</h1>
               <h1>Quiz App</h1>
               <h4>Choose a username to get started </h4>
@@ -115,7 +114,6 @@ class CreateUser extends Component {
       } else if(this.props.doRender){
         return (
           <div className="createUserDiv">
-            <h1></h1>
             <h1>Quiz App</h1>
             <h4>Change your username </h4>
             <input onChange={this.handleChange} value={this.state.username}type="text" placeholder="Username.."/>
