@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './css/Tabs.css';
 import Compete from "./Compete";
 import Addquestion from "./Addquestion";
+import Highscores from "./Highscores";
 import {database} from "../firebase/firebase";
 
 function Tab(props) {
@@ -53,7 +54,7 @@ class Tabs extends Component {
                 renderElement = <Compete questions={this.state.questions}/>;
                 break;
             case 'highscore':
-                renderElement = <h1>highscore</h1>;
+                renderElement = <Highscores />;
                 break;
             case 'profil':
                 renderElement = <h1>Profil</h1>;

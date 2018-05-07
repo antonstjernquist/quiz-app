@@ -34,7 +34,7 @@ class CreateUser extends Component {
       }
 
       /* Check username */
-      database.checkName()
+      database.retrieveAllUsers()
       .then(function (res){
         let taken = false;
         let data = res.val();

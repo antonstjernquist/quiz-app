@@ -20,7 +20,7 @@ export function getQuestions() {
     return val;
 }
 
-export const checkName = () => {
+export const retrieveAllUsers = () => {
   return database.ref('users/').once('value');
 }
 
