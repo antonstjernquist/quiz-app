@@ -21,6 +21,7 @@ div.highscoreWrapper > ul > li {
   display: flex;
   list-style: none;
   padding: 15px;
+  text-align: left;
 }
 
 div.highscoreWrapper > ul > li:nth-child(odd){
@@ -29,7 +30,9 @@ div.highscoreWrapper > ul > li:nth-child(odd){
 div.highscoreWrapper > ul > li:nth-child(even){
   background-color: #2298c6;
 }
-
+div.highscoreWrapper > ul > li > span {
+  min-width: 180px;
+}
 div.highscoreTableHeader {
   display: flex;
   background-color: #1d7496;

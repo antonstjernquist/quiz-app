@@ -27,7 +27,9 @@ class Header extends Component {
 
                         <p className="link" onClick={this.props.toggleChangeUsername}> {user.username}</p>
                         <div className="divider">&nbsp;</div>
-                        <p onClick={auth.doSignOut} className="link"> Logga ut </p>
+                        <p className="credits"> {this.props.user.credits} credits</p>
+                        <div className="divider">&nbsp;</div>
+                        <p onClick={auth.doSignOut} className="link"> Logout </p>
                     </div>
                 </header>
             )
@@ -43,7 +45,7 @@ class Header extends Component {
                                 prevState.props.toggleLoadingState();
                             });
                             this.props.toggleLoadingState();
-                        }} className="link"> Logga in </p>
+                        }} className="link"> Login </p>
                     </div>
                 </header>
             )

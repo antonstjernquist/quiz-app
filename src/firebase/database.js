@@ -31,3 +31,42 @@ export const createUser = user => {
 export const retrieveUser = uid => {
   return database.ref('users/' + uid).once('value');
 }
+
+export const setCredits = (uid, credits) => {
+  console.log('Setting balance to: ' + credits);
+  return database.ref('users/' + uid).update({credits: Number(credits)});
+}
+
+export const takeCredits = (uid, credits) => {
+  console.log('Taking credits..', credits);
+
+  database.ref('users/' + uid + '/credits').once('value', function(snapshot){
+    let currentCredits = snapshot.val();
+
+    let newBalance = currentCredits - credits;
+
+    if(newBalance <= 0){
+      console.log('You cannot afford this');
+    } else {
+      console.log('New balance: ', newBalance);
+      return setCredits(uid, newBalance);
+    }
+
+  })
+}
+
+export const updateCredits = (uid, state) => {
+  database.ref('users/' + uid).on('child_changed', function(snapshot){
+    let key = snapshot.key;
+    let data = snapshot.val();
+
+    if(key === 'credits'){
+      console.log('Updating user credits in app state!');
+      console.log('New balance: ', data);
+      let user = state.state.user;
+      user.credits = data;
+      state.setState({user: user});
+    }
+
+  })
+}

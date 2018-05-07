@@ -31,6 +31,23 @@ class CreateUser extends Component {
       /* Just changing username? */
       if(event.target.innerText.includes('Change')){
         edit = true;
+
+        /* Check credits */
+        if(propUser.credits){
+          if(propUser.credits > 2000){
+            console.log('Name changed!');
+            database.takeCredits(propUser.uid, 2000);
+          } else {
+            console.log('You cannot afford this, sorry');
+            return false;
+          }
+        } else {
+          /* No credits ? */
+          console.log('You have no credits!');
+          database.setCredits(propUser.uid, 0);
+          return false;
+        }
+
       }
 
       /* Check username */
@@ -59,7 +76,8 @@ class CreateUser extends Component {
               email: propUser.email,
               photoURL: propUser.photoURL,
               created: new Date().getTime(),
-              username: username
+              username: username,
+              credits: propUser.credits ? propUser.credits : 0
             }
             database.createUser(userObject);
             prevState.props.setUser(userObject);
@@ -115,7 +133,8 @@ class CreateUser extends Component {
         return (
           <div className="createUserDiv">
             <h1>Quiz App</h1>
-            <h4>Change your username </h4>
+            <h4>Change your username</h4>
+            <h5>Cost: 2000 credits</h5>
             <input onChange={this.handleChange} value={this.state.username}type="text" placeholder="Username.."/>
             <br />
             <button onClick={this.handleClick}> Change username </button>
