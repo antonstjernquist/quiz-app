@@ -1,16 +1,104 @@
-.quizCard-wrapper {
+.quiz-wrapper {
     display: flex;
-    flex-direction: column;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
+
+.quizCard-wrapper {
+    perspective: 1000px;
+    background-color: transparent;
+    transition: 1s;
+    position: relative;
+    max-width: 100%;
+    width: 250px;
+    min-width: 250px;
+    min-height: 350px;
+    display: flex;
+    flex-flow: column;
+    border-radius: .25rem;
+    margin: 1rem;
+}
+
+.quizHeader {
+    font-family: 'Acme', sans-serif;
+    font-size: 3rem;
+    color: #fefefe;
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    margin: 10px 0;
+}
+.quizCard h1 {
+    color: #3cadf0;
+}
+
+.back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    top: 0;
+    left: 0;
+    transform: rotateY(180deg);
+    border-radius: .25rem;
+    overflow: hidden;
+    background-color: #fefefe;
+}
+
+.back .one {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    transform: rotateY(0deg);
+    border-radius: .25rem;
+    overflow: hidden;
+}
+
+.front .one {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url("http://8gmwp015fo-flywheel.netdna-ssl.com/wp-content/uploads/sites/4/2014/05/cupcake-cardback.png");
+}
+
+.quizCard {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+    transition: 1s;
+    transform-style: preserve-3d;
+}
+
+.quizCardFlipped {
+    transform: rotateY(180deg);
+}
+
 .chooseCategory {
     display: inline-block;
-    margin: 0 5px 0 0 ;
+    margin: 0 5px 0 0;
 }
+
 .chooseCategory-wrapper {
     padding: 20px 0;
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
-    background-color: #369ccf;
+    background-color: #2685cf;
     width: 800px;
     margin: 0 auto;
 }

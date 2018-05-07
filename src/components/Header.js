@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { auth } from '../firebase';
+import React, {Component} from 'react';
+import {auth} from '../firebase';
 import './css/header.css';
 
 class Header extends Component {
@@ -10,48 +10,45 @@ class Header extends Component {
 
         /* Initial state of component */
         this.state = {
-          hej: 'hej'
+            hej: 'hej'
         };
 
     }
 
     /* Return */
     render() {
-      let user = this.props.user;
-      if(user){
-        return (
+        let user = this.props.user;
+        if (user) {
+            return (
+                <header>
+                    <h1> Quiz app </h1>
+                    <div>
+                        <img alt="You" src={user.photoURL}/>
 
-          <header>
-            <h1> Quiz app </h1>
-            <div>
+                        <p className="link" onClick={this.props.toggleChangeUsername}> {user.username}</p>
+                        <div className="divider">&nbsp;</div>
+                        <p onClick={auth.doSignOut} className="link"> Logga ut </p>
+                    </div>
+                </header>
+            )
+        } else {
 
-              <img alt="You" src={user.photoURL}/>
+            return (
+                <header>
+                    <h1> Quiz app </h1>
+                    <div>
+                        <p onClick={(e) => {
+                            let prevState = this;
+                            auth.doLogInWithGoogle().then(function () {
+                                prevState.props.toggleLoadingState();
+                            });
+                            this.props.toggleLoadingState();
+                        }} className="link"> Logga in </p>
+                    </div>
+                </header>
+            )
 
-              <p className="link" onClick={this.props.toggleChangeUsername}> { user.username }</p>
-              <div className="divider">&nbsp;</div>
-              <p onClick={auth.doSignOut} className="link"> Logga ut </p>
-            </div>
-          </header>
-
-        )
-      } else {
-
-        return (
-          <header>
-            <h1> Quiz app </h1>
-            <div>
-              <p onClick={(e) => {
-                  let prevState = this;
-                  auth.doLogInWithGoogle().then(function (){
-                    prevState.props.toggleLoadingState();
-                  });
-                  this.props.toggleLoadingState();
-              }} className="link"> Logga in </p>
-            </div>
-          </header>
-        )
-
-      }
+        }
     }
 }
 

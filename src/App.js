@@ -4,7 +4,6 @@ import { auth, database } from './firebase';
 import Header from './components/Header.js';
 import Loading from './components/loading.js';
 import CreateUser from './components/CreateUser.js';
-import Addquestion from './components/Addquestion.js';
 import Tabs from './components/Tabs.js';
 
 
@@ -88,17 +87,13 @@ class App extends Component {
   }
 
   render() {
-    const tabs = ['tävla', 'highscore', 'profil'];
+    const tabs = ['compete', 'highscore', 'profil', 'add question'];
     return (
       <div className="App">
         <Loading loading={this.state.loading} />
         <CreateUser toggleChangeUsername={this.toggleChangeUsername} doRender={this.state.changeUsername} setUser={this.setUser} user={this.state.user} />
         <Header toggleChangeUsername={this.toggleChangeUsername} user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
-        <h1> Quiz app or something</h1>
-        <Tabs tabs={tabs} />
-        <button onClick={this.handeLoginClick.bind(this)} > {this.logText()} </button>
-        <button onClick={this.handleQuestionRender.bind(this)} > New question </button>
-        <Addquestion user={this.state.user} doRender={this.state.renderQuestion} />
+        <Tabs user={this.state.user} tabs={tabs} />
       </div>
     );
   }

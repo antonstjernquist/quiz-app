@@ -1,7 +1,9 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './css/Tabs.css';
 import Compete from "./Compete";
-import { database } from "../firebase/firebase";
+import Addquestion from "./Addquestion";
+import {database} from "../firebase/firebase";
+
 function Tab(props) {
     const handleSelect = () => {
         props.onSelect(props.tab);
@@ -25,44 +27,48 @@ class Tabs extends Component {
 
     onSelect(item) {
         console.log(item);
-        this.setState({ activeElement: item });
+        this.setState({activeElement: item});
     }
 
     componentDidMount() {
         const questionsRef = database.ref('questions/');
-        let val = null;
         questionsRef.on('value', (snapshot) => {
             this.setState({
                 questions: snapshot.val()
             });
+            console.log("Questions", this.state.questions);
+
         });
 
     }
 
     render() {
         const tabs = this.props.tabs.map((tab, index) => {
-            return <Tab tab={tab} key={index} onSelect={this.onSelect} />;
+            return <Tab tab={tab} key={index} onSelect={this.onSelect}/>;
         });
 
         let renderElement = null;
-      switch (this.state.activeElement) {
-        case 'tävla':
-          renderElement = <Compete questions={this.state.questions}/>;
-          break;
-        case 'highscore':
-          renderElement = <h1>highscore</h1>;
-          break;
-        case 'profil':
-          renderElement = <h1>Profil</h1>;
-          break;
-        default:
-          renderElement = <h1>Welcome select a option in the menu</h1>;
-      }
+        switch (this.state.activeElement) {
+            case 'compete':
+                renderElement = <Compete questions={this.state.questions}/>;
+                break;
+            case 'highscore':
+                renderElement = <h1>highscore</h1>;
+                break;
+            case 'profil':
+                renderElement = <h1>Profil</h1>;
+                break;
+            case 'add question':
+                renderElement = <Addquestion user={this.props.user} />;
+                break;
+            default:
+                renderElement = <h1>Default render</h1>;
+        }
 
         return (
             <div className={'flex-column'}>
                 <div className={'flex'}>{tabs}</div>
-                <div>{renderElement}</div>
+                <div className={"renderElement"}>{renderElement}</div>
             </div>
         );
     }

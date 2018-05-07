@@ -10,7 +10,9 @@ input {
   font-size: 1em;
 }
 
-
+.wrapper {
+  margin-top: 20px;
+}
 div.answer > button {
   padding: 4px 5px 2px 6px;
   border-radius: 4px;
