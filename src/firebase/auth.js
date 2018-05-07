@@ -1,4 +1,5 @@
-import { auth, providerData } from './firebase.js';
+import { auth, providerData} from './firebase.js';
+import { database } from '../firebase';
 
 
 export const doLogInWithGoogle = (state) => {
@@ -13,11 +14,22 @@ export const onAuthStateChanged = (state) => {
   return auth.onAuthStateChanged(function(user){
 
     if(user){
-      state.setState({loggedin: true});
+      // Try to retrieve the user from the databse
+      database.retrieveUser(user.uid).then(function (result){
+        let data = result.val();
+        if(data){
+          console.log('Setting user from database');
+          state.setState({user: data});
+        } else {
+          console.log('Setting user directly from auth info');
+          state.setState({user: user});
+        }
+        console.log('result is: ', data);
+      });
     } else {
-      state.setState({loggedin: false});
+      state.setState({user: null})
     }
-    state.setState({user: user});
+
 
   });
 }

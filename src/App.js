@@ -3,12 +3,11 @@ import './App.css';
 import { auth, database } from './firebase';
 import Header from './components/Header.js';
 import Loading from './components/loading.js';
+import CreateUser from './components/CreateUser.js';
 import Addquestion from './components/Addquestion.js';
 
 
 class App extends Component {
-
-
 
 
   constructor(props){
@@ -17,7 +16,8 @@ class App extends Component {
       loggedin: false,
       user: null,
       renderQuestion: false,
-      loading: false
+      loading: false,
+      changeUsername: false
     }
 
     /* Auth */
@@ -35,7 +35,7 @@ class App extends Component {
   handeLoginClick(e){
     let prevState = this;
 
-    if(this.state.loggedin){
+    if(this.state.user){
       auth.doSignOut();
       this.setState({user: null})
     } else {
@@ -48,7 +48,7 @@ class App extends Component {
       // The signed-in user info.
       var user = result.user;
 
-      prevState.setState({ user: user })
+      console.log('Does this even run?');
 
       // Remove loading
       prevState.setState({ loading: false })
@@ -77,16 +77,25 @@ class App extends Component {
     this.setState({loading: !this.state.loading});
   }
 
+  setUser = user => {
+    this.setState({user: user});
+  }
+
+  toggleChangeUsername = () => {
+    console.log('State now is: ', this.state.changeUsername);
+    this.setState({changeUsername: !this.state.changeUsername});
+  }
 
   render() {
     return (
       <div className="App">
         <Loading loading={this.state.loading} />
-        <Header user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
-        <h1> Firebase example in React</h1>
+        <CreateUser toggleChangeUsername={this.toggleChangeUsername} doRender={this.state.changeUsername} setUser={this.setUser} user={this.state.user} />
+        <Header toggleChangeUsername={this.toggleChangeUsername} user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
+        <h1> Quiz app or something</h1>
         <button onClick={this.handeLoginClick.bind(this)} > {this.logText()} </button>
         <button onClick={this.handleQuestionRender.bind(this)} > New question </button>
-        <Addquestion doRender={this.state.renderQuestion} />
+        <Addquestion user={this.state.user} doRender={this.state.renderQuestion} />
       </div>
     );
   }
