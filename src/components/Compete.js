@@ -1,20 +1,33 @@
 import React, {Component} from 'react';
 import "./css/Compete.css"
 
+function Counter(props) {
+    console.log("Le quest", props.alternative);
+    return (
+        <div className="Counter-wrapper">
+            <span className="counter-question">Question </span>
+            <span className="counter">{props.counter + 1}</span>
+            <span className="counter">of</span>
+            <span className="counter">{props.alternative.length}</span>
+        </div>
+    )
+}
 
 class Quiz extends Component {
     constructor(props) {
         super(props);
     }
+
     render() {
         const cards = [];
-        if (this.props.Quest){
+        if (this.props.Quest) {
             for (const alternative in this.props.Quest.alternatives) {
                 const QuestionObj = this.props.Quest.alternatives[alternative];
                 cards.push(
                     <Quizcard
-                        onClick={this.props.guessTheAnswer(alternative)} // HÄR FUCKAR DEN
+                        guessTheAnswer={this.props.guessTheAnswer}
                         key={alternative}
+                        objKey={alternative}
                         alternative={QuestionObj}
                         loaded={this.props.loaded}
                     />
@@ -24,6 +37,7 @@ class Quiz extends Component {
         return (
             <div>
                 <h1 className={"quizHeader"}>{this.props.Quest.question}</h1>
+                <Counter counter={this.props.counter} alternative={this.props.allQuest}/>
                 <div className={"quiz-wrapper"}>
                     {cards.length > 0 && cards}
                 </div>
@@ -34,7 +48,9 @@ class Quiz extends Component {
 
 function Quizcard(props) {
     return (
-        <div className={"quizCard-wrapper"}>
+        <div onClick={() => {
+            props.guessTheAnswer(props.objKey)
+        }} className={"quizCard-wrapper"}>
             <div className={"quizCard" + (props.loaded ? ' quizCardFlipped' : null)}>
                 <div className={"back"}>
                     <div className={"one"}>
@@ -74,9 +90,11 @@ class Compete extends Component {
             selectedCategory: null,
             counter: 0,
             loaded: false,
+            questionsArr: [],
         };
         this.categorySelect = this.categorySelect.bind(this);
         this.guessTheAnswer = this.guessTheAnswer.bind(this);
+        this.loaded = this.loaded.bind(this);
     }
 
     categorySelect(event) {
@@ -84,30 +102,46 @@ class Compete extends Component {
             loaded: false,
             selectedCategory: event.target.value,
         });
-        console.log("Category " + event.target.value);
-        console.log("Questions", this.props.questions);
-        console.log("COunter")
+        this.setState({
+            questionsArr: Object.values(this.props.questions[event.target.value]),
+        });
+        setTimeout(() => {
+            this.loaded();
+        }, 4000);
     }
+
     guessTheAnswer(ans) {
-        // this.setState({
-        //     counter: this.state.counter++,
-        // });
-        console.log("woffff", ans);
-    }
-    render() {
-        let questionsArr;
-        if (this.state.selectedCategory) {
-            questionsArr = Object.values(this.props.questions[this.state.selectedCategory]);
-            setTimeout(() => {
-                this.setState({loaded: true});
-            }, 5500);
+        this.setState({
+            counter: this.state.counter + 1,
+        });
+        console.log("ANS", ans);
+        if (ans === this.state.questionsArr[this.state.counter].answer) {
+            alert("WIN");
+        } else {
+            alert("Noob loss");
         }
+
+        console.log("Counter", this.state.counter);
+    }
+
+    loaded() {
+        this.setState({loaded: true});
+    }
+
+    render() {
         return (
             <div className={"competeWrapper"}>
                 <ChooseCategory categorySelect={this.categorySelect} questions={this.props.questions}/>
                 {this.state.selectedCategory &&
-                <Quiz guessTheAnswer={this.guessTheAnswer} loaded={this.state.loaded} Quest={questionsArr[this.state.counter]}/>}
-            </div> // HÄR SKICKAR JAG NER DEN
+                <Quiz
+                    guessTheAnswer={this.guessTheAnswer}
+                    loaded={this.state.loaded}
+                    allQuest={this.state.questionsArr}
+                    counter={this.state.counter}
+                    Quest={this.state.questionsArr[this.state.counter]}
+                />
+                }
+            </div>
         );
     }
 }
