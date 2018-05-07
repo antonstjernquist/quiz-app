@@ -32,6 +32,11 @@
 .quizCard h1 {
     color: #3cadf0;
 }
+.quizCard-wrapper .quizCard:hover {
+    box-shadow: 0 0 30px -3px #f5eb7d;
+    cursor: pointer;
+    transition: 0.2s;
+}
 
 .back {
     position: absolute;
@@ -92,6 +97,7 @@
 .chooseCategory {
     display: inline-block;
     margin: 0 5px 0 0;
+    color: #fefefe;
 }
 
 .chooseCategory-wrapper {
@@ -101,4 +107,11 @@
     background-color: #2685cf;
     width: 800px;
     margin: 0 auto;
+}
+.counter-question {
+    color: #fefefe;
+}
+.counter {
+    color: #ccc;
+    padding: 0 3px;
 }
