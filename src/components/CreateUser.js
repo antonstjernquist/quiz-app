@@ -96,7 +96,6 @@ class CreateUser extends Component {
 
     /* Return */
     render() {
-      console.log('Dorender: ', this.props.doRender);
       /* Check if there's a user logged in */
       if(this.props.user && !this.props.doRender){
         /* Check if this user has a username */
@@ -122,6 +121,7 @@ class CreateUser extends Component {
             <input onChange={this.handleChange} value={this.state.username}type="text" placeholder="Username.."/>
             <br />
             <button onClick={this.handleClick}> Change username </button>
+            <button onClick={this.props.toggleChangeUsername}> Close </button>
           </div>
         )
       }
