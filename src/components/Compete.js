@@ -6,14 +6,20 @@ class Quiz extends Component {
     constructor(props) {
         super(props);
     }
-
     render() {
         const cards = [];
-        for (const alternative in this.props.Quest.alternatives) {
-            cards.push(
-                <Quizcard key={alternative} alternative={this.props.Quest.alternatives[alternative]}
-                          loaded={this.props.loaded}/>
-            )
+        if (this.props.Quest){
+            for (const alternative in this.props.Quest.alternatives) {
+                const QuestionObj = this.props.Quest.alternatives[alternative];
+                cards.push(
+                    <Quizcard
+                        onClick={this.props.guessTheAnswer(alternative)} // HÄR FUCKAR DEN
+                        key={alternative}
+                        alternative={QuestionObj}
+                        loaded={this.props.loaded}
+                    />
+                )
+            }
         }
         return (
             <div>
@@ -22,7 +28,6 @@ class Quiz extends Component {
                     {cards.length > 0 && cards}
                 </div>
             </div>
-
         )
     }
 }
@@ -37,7 +42,7 @@ function Quizcard(props) {
                     </div>
                 </div>
                 <div className={"front"}>
-                    <div className={"one"}></div>
+                    <div className={"one"}>&nbsp;</div>
                 </div>
             </div>
         </div>
@@ -71,7 +76,7 @@ class Compete extends Component {
             loaded: false,
         };
         this.categorySelect = this.categorySelect.bind(this);
-
+        this.guessTheAnswer = this.guessTheAnswer.bind(this);
     }
 
     categorySelect(event) {
@@ -81,6 +86,13 @@ class Compete extends Component {
         });
         console.log("Category " + event.target.value);
         console.log("Questions", this.props.questions);
+        console.log("COunter")
+    }
+    guessTheAnswer(ans) {
+        // this.setState({
+        //     counter: this.state.counter++,
+        // });
+        console.log("woffff", ans);
     }
     render() {
         let questionsArr;
@@ -94,8 +106,8 @@ class Compete extends Component {
             <div className={"competeWrapper"}>
                 <ChooseCategory categorySelect={this.categorySelect} questions={this.props.questions}/>
                 {this.state.selectedCategory &&
-                <Quiz loaded={this.state.loaded} Quest={questionsArr[this.state.counter]}/>}
-            </div>
+                <Quiz guessTheAnswer={this.guessTheAnswer} loaded={this.state.loaded} Quest={questionsArr[this.state.counter]}/>}
+            </div> // HÄR SKICKAR JAG NER DEN
         );
     }
 }
