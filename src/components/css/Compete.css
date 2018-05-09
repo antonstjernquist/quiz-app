@@ -93,7 +93,10 @@
 .quizCardFlipped {
     transform: rotateY(180deg);
 }
-
+.winner {
+    background-color: #cceab5 !important;
+    transition: 0.2s;
+}
 .chooseCategory {
     display: inline-block;
     margin: 0 5px 0 0;
