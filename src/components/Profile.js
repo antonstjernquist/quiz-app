@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { database } from "../firebase";
-import Loading from "./Loading.js";
 import "./css/profile.css";
 
 class Profile extends Component {
