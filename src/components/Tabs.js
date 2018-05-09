@@ -3,6 +3,7 @@ import './css/Tabs.css';
 import Compete from "./Compete";
 import Addquestion from "./Addquestion";
 import Highscores from "./Highscores";
+import Profile from "./Profile";
 import {database} from "../firebase/firebase";
 
 function Tab(props) {
@@ -57,7 +58,7 @@ class Tabs extends Component {
                 renderElement = <Highscores />;
                 break;
             case 'profil':
-                renderElement = <h1>Profil</h1>;
+                renderElement = <Profile user={this.props.user} loading={this.props.loading} toggleLoadingState={this.props.toggleLoadingState} />;
                 break;
             case 'add question':
                 renderElement = <Addquestion user={this.props.user} />;
