@@ -65,7 +65,7 @@ class CreateUser extends Component {
         }
         if(taken){
           console.log('Name already taken');
-        } else {
+        } else if(!propUser.username){
 
           /* Create user */
 
@@ -81,7 +81,6 @@ class CreateUser extends Component {
               credits: propUser.credits ? propUser.credits : 0
             }
             database.createUser(userObject);
-            prevState.props.setUser(userObject);
 
             if(edit){
               console.log('Close');
@@ -91,6 +90,10 @@ class CreateUser extends Component {
           } else {
             console.log('This username does not fulfill the requirements.');
           }
+        } else if(prevState.controlName(username)){
+          /* Username is okay */
+          database.updateUsername(propUser.uid, username);
+          prevState.props.toggleChangeUsername();
         }
         console.log('Result is: ', data);
       }).catch(function (err){

@@ -39,6 +39,10 @@ export const retrieveUser = uid => {
   return database.ref('users/' + uid).once('value');
 }
 
+export const updateUsername = (uid, username) => {
+  return database.ref('users/' + uid + '/username').set(username);
+}
+
 export const setCredits = (uid, credits) => {
   console.log('Setting balance to: ' + credits);
   return database.ref('users/' + uid).update({credits: Number(credits)});
@@ -63,12 +67,21 @@ export const takeCredits = (uid, credits) => {
 }
 
 export const updateUser = (uid, state) => {
-  database.ref('users/' + uid).on('value', function(snapshot){
-    let key = snapshot.key;
+  console.log('Starting listener on user..');
+  return database.ref('users/').on('child_changed', function(snapshot){
+    console.log('Updating user..');
     let data = snapshot.val();
+    let key = snapshot.key;
 
-    state.setState({user: data});
-
-
+    if(key === uid){
+      console.log('Updated user straight from database: ', data);
+      state.setState({user: data});
+    }
   })
+}
+
+export const updateHighscores = state => {
+  database.ref('users/').on('child_changed', snapshot => {
+    state.updateUserList();
+  });
 }

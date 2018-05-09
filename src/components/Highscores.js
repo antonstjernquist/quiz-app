@@ -16,6 +16,7 @@ class Highscores extends Component {
 
     componentDidMount(){
       this.updateUserList();
+      database.updateHighscores(this);
     }
 
     updateUserList = () => {
@@ -35,7 +36,6 @@ class Highscores extends Component {
     }
 
     render() {
-      this.updateUserList();
       let oldList = this.state.userlist.sort( (x,y) => {
         if(x.credits < y.credits) {
           return 1;
