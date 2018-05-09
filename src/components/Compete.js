@@ -9,9 +9,7 @@ function Counter(props) {
       <span className="counter">{props.counter + 1}</span>
       <span className="counter">of</span>
       <span className="counter">{props.alternative.length}</span>
-      <div>
-        <span>{props.timer} sec</span>
-      </div>
+      <div />
     </div>
   );
 }
@@ -41,7 +39,6 @@ class Quiz extends Component {
       <div>
         <h1 className={"quizHeader"}>{this.props.Quest.question}</h1>
         <Counter
-          timer={this.props.timer}
           counter={this.props.counter}
           alternative={this.props.allQuest}
         />
@@ -112,16 +109,21 @@ class Compete extends Component {
   }
 
   categorySelect(event) {
+    let e;
+    if (!event.target.value) {
+      e = this.state.selectedCategory;
+    } else {
+      e = event.target.value
+    }
     this.setState({
       loaded: false,
-      selectedCategory: event.target.value
-    });
-    this.setState({
-      questionsArr: Object.values(this.props.questions[event.target.value])
+      counter: 0,
+      selectedCategory: e,
+      questionsArr: Object.values(this.props.questions[e])
     });
     setTimeout(() => {
       this.loaded();
-      this.initializeTimer();
+      this.setState({ start: true });
     }, 4000);
   }
   initializeTimer() {
@@ -139,6 +141,7 @@ class Compete extends Component {
         winner: ""
       });
     }, 2000);
+    this.setState({ start: false, stop: true });
 
     this.setState({
       winner: this.state.questionsArr[this.state.counter].answer
@@ -170,22 +173,21 @@ class Compete extends Component {
           categorySelect={this.categorySelect}
           questions={this.props.questions}
         />
-        {(this.state.selectedCategory && this.state.counter + 1 <= this.state.questionsArr.length)&& (
-          <Quiz
-            guessTheAnswer={this.guessTheAnswer}
-            loaded={this.state.loaded}
-            timer={this.state.timer}
-            allQuest={this.state.questionsArr}
-            counter={this.state.counter}
-            winner={this.state.winner}
-            Quest={this.state.questionsArr[this.state.counter]}
-          />
-        )}
-          {
-              (this.state.counter >= this.state.questionsArr.length && this.state.selectedCategory)
-              &&
-              <button type="button">Play again</button>
-          }
+        {this.state.selectedCategory &&
+          this.state.counter + 1 <= this.state.questionsArr.length && (
+            <Quiz
+              guessTheAnswer={this.guessTheAnswer}
+              loaded={this.state.loaded}
+              allQuest={this.state.questionsArr}
+              counter={this.state.counter}
+              winner={this.state.winner}
+              Quest={this.state.questionsArr[this.state.counter]}
+            />
+          )}
+        {this.state.counter >= this.state.questionsArr.length &&
+          this.state.selectedCategory && (
+            <button onClick={this.categorySelect} type="button">Play again</button>
+          )}
       </div>
     );
   }
