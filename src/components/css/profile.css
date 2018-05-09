@@ -8,6 +8,12 @@ div.userProfileDiv {
   position: relative;
 }
 
+div.userProfileDiv > div > span {
+  margin-left: 35px;
+  margin-top: 25px;
+  align-self: flex-start;
+}
+
 div.userProfileDiv > img {
   width: 80px;
   height: 80px;
@@ -28,10 +34,20 @@ div.userProfileDiv > .editButton {
   right: 0;
   margin: 10px;
 }
-div.userProfileDiv > input {
+div.userProfileDiv > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+div.userProfileDiv > div > input {
   background-color: #1c7fcc;
   color: #fefefe;
   margin: 10px;
   width: 80%;
   border-radius: 4px;
+}
+
+div.userProfileDiv > div:first-child {
+  margin-top: 15px;
 }

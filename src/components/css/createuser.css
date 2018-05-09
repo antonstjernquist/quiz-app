@@ -6,6 +6,7 @@ div.createUserDiv {
   color: #fefefe;
   text-align: center;
   margin-top: 65px;
+  z-index: 2;
 }
 div.createUserDiv > h1 {
   font-family: 'Acme', sans-serif;

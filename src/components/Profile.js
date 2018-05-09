@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { database } from "../firebase";
-import Loading from "./Loading.js";
 import "./css/profile.css";
 
 class Profile extends Component {
@@ -11,7 +10,10 @@ class Profile extends Component {
 
     /* Initial state of component */
     this.state = {
-      edit: false
+      edit: false,
+      inputName: this.props.user.displayName,
+      inputPhoto: this.props.user.photoURL,
+      inputEmail: this.props.user.email
     };
   }
 
@@ -25,7 +27,28 @@ class Profile extends Component {
 
   toggleEdit = () => {
     this.setState({ edit: !this.state.edit });
+
+
+    /* SAVE CHANGES FROM STATE */
+    let newUserObject = this.props.user;
+
+    newUserObject.photoURL = this.state.inputPhoto;
+    newUserObject.displayName = this.state.inputName;
+    newUserObject.email = this.state.inputEmail;
+
+    database.editUser(this.props.user.uid, newUserObject);
+
   };
+
+  handleChange = (event, type) => {
+    if(type === 'photoURL'){
+      this.setState({inputPhoto: event.target.value});
+    } else if (type === 'name'){
+      this.setState({inputName: event.target.value});
+    } else if (type === 'email'){
+      this.setState({inputEmail: event.target.value});
+    }
+  }
 
   /* Return */
   render() {
@@ -38,12 +61,10 @@ class Profile extends Component {
     } else if (!this.state.edit) {
       return (
         <div className="userProfileDiv">
-          <img src={this.props.user.photoURL} alt="Profile Picture" />
-          <h1> Name: {this.props.user.displayName}</h1>
-          <p> Credits: {this.props.user.credits} </p>
+          <img src={this.props.user.photoURL} alt="Profile" />
+          <h1> {this.props.user.displayName}</h1>
+          <p> Balance: {this.props.user.credits} </p>
           <p> Username: {this.props.user.username} </p>
-          <p> Created: {this.props.user.created} </p>
-          <p> Uid: {this.props.user.uid} </p>
           <p> Email: {this.props.user.email} </p>
           <p> You are admin: {this.props.user.admin.toString()} </p>
           <button onClick={this.toggleAdmin}> Toggle Admin</button>
@@ -56,12 +77,18 @@ class Profile extends Component {
     } else {
       return (
         <div className="userProfileDiv">
-          <img src={this.props.user.photoURL} alt="Profile Picture" />
-          <input type="text" placeholder="Photo URL" />{" "}
-          {/* MAKE THIS V-MODEL WITH USER DATA DUDEEE */}
-          <input type="text" placeholder="Name" />
-          <input type="text" placeholder="Username" />
-          <input type="text" placeholder="Email" />
+        <div>
+          <span> Profile picture </span>
+          <input type="text" onChange={ event => this.handleChange(event, 'photoURL')} value={this.state.inputPhoto} placeholder="Photo URL" />{" "}
+        </div>
+        <div>
+          <span> Name </span>
+          <input type="text" onChange={ event => this.handleChange(event, 'name')} value={this.state.inputName} placeholder="Name" />
+        </div>
+        <div>
+          <span> Email </span>
+          <input type="text" onChange={ event => this.handleChange(event, 'email')} value={this.state.inputEmail} placeholder="Email" />
+        </div>
           <button className="editButton" onClick={this.toggleEdit}>
             <i className="material-icons"> save </i>
           </button>

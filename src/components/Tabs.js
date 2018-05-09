@@ -58,13 +58,13 @@ class Tabs extends Component {
                 renderElement = <Highscores />;
                 break;
             case 'profil':
-                renderElement = <Profile user={this.props.user} loading={this.props.loading} toggleLoadingState={this.props.toggleLoadingState} />;
+                renderElement = <Profile user={this.props.user} />;
                 break;
             case 'add question':
                 renderElement = <Addquestion user={this.props.user} />;
                 break;
             default:
-                renderElement = <h1>Default render</h1>;
+                renderElement = <h1>Landing Page, welcome page</h1>;
         }
 
         return (
