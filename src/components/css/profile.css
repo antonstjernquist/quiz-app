@@ -1,0 +1,37 @@
+div.userProfileDiv {
+  color: #fefefe;
+  background-color: #2a93d7;
+  width: 60%;
+  margin: 25px auto;
+  padding: 30px 0px;
+  border-radius: 5px;
+  position: relative;
+}
+
+div.userProfileDiv > img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+div.userProfileDiv > button {
+  background-color: #164e71;
+}
+div.userProfileDiv > button:hover {
+  background-color: #1e6290;
+}
+
+div.userProfileDiv > .editButton {
+  padding: 6px 6px 2px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
+div.userProfileDiv > input {
+  background-color: #1c7fcc;
+  color: #fefefe;
+  margin: 10px;
+  width: 80%;
+  border-radius: 4px;
+}

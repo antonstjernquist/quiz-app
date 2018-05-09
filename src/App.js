@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { auth, database } from './firebase';
 import Header from './components/Header.js';
-import Loading from './components/loading.js';
+import Loading from './components/Loading.js';
 import CreateUser from './components/CreateUser.js';
 import Tabs from './components/Tabs.js';
 
@@ -14,12 +14,14 @@ class App extends Component {
       loggedin: false,
       user: null,
       renderQuestion: false,
-      loading: false,
+      loading: true,
       changeUsername: false
     };
 
     /* Auth */
     auth.onAuthStateChanged(this);
+
+    /* Loading */
 
   }
 
@@ -73,8 +75,12 @@ class App extends Component {
     // });
   }
 
-  toggleLoadingState = () => {
-    this.setState({loading: !this.state.loading});
+  toggleLoadingState = bool => {
+    if(bool !== undefined){
+      this.setState({loading: bool})
+    } else {
+      this.setState({loading: !this.state.loading});
+    }
   }
 
   setUser = user => {
@@ -87,13 +93,20 @@ class App extends Component {
   }
 
   render() {
-    const tabs = ['compete', 'highscore', 'profil', 'add question'];
+    let tabs = ['compete', 'highscore'];
+    if(this.state.user){
+      tabs = ['compete', 'highscore', 'profil'];
+      if(this.state.user.admin === true){
+        tabs.push('add question');
+      }
+    }
+
     return (
       <div className="App">
         <Loading loading={this.state.loading} />
         <CreateUser toggleChangeUsername={this.toggleChangeUsername} doRender={this.state.changeUsername} setUser={this.setUser} user={this.state.user} />
         <Header toggleChangeUsername={this.toggleChangeUsername} user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
-        <Tabs user={this.state.user} tabs={tabs} />
+        <Tabs user={this.state.user} tabs={tabs} loading={this.state.loading} toggleLoadingState={this.toggleLoadingState}/>
       </div>
     );
   }

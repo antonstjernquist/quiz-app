@@ -77,6 +77,7 @@ class CreateUser extends Component {
               photoURL: propUser.photoURL,
               created: new Date().getTime(),
               username: username,
+              admin: false,
               credits: propUser.credits ? propUser.credits : 0
             }
             database.createUser(userObject);

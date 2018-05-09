@@ -24,6 +24,13 @@ export const retrieveAllUsers = () => {
   return database.ref('users/').once('value');
 }
 
+export const makeAdmin = uid => {
+  database.ref('users/' + uid + '/admin').set(true);
+}
+export const removeAdmin = uid => {
+  database.ref('users/' + uid + '/admin').set(false);
+}
+
 export const createUser = user => {
   database.ref('users/' + user.uid).set(user);
 }
@@ -55,18 +62,13 @@ export const takeCredits = (uid, credits) => {
   })
 }
 
-export const updateCredits = (uid, state) => {
-  database.ref('users/' + uid).on('child_changed', function(snapshot){
+export const updateUser = (uid, state) => {
+  database.ref('users/' + uid).on('value', function(snapshot){
     let key = snapshot.key;
     let data = snapshot.val();
 
-    if(key === 'credits'){
-      console.log('Updating user credits in app state!');
-      console.log('New balance: ', data);
-      let user = state.state.user;
-      user.credits = data;
-      state.setState({user: user});
-    }
+    state.setState({user: data});
+
 
   })
 }

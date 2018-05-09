@@ -16,7 +16,7 @@ export const onAuthStateChanged = (state) => {
     if(user){
 
       /* Turn on listener for creditUpdates on this UID */
-      database.updateCredits(user.uid, state);
+      database.updateUser(user.uid, state);
 
       // Try to retrieve the user from the databse
       database.retrieveUser(user.uid).then(function (result){
@@ -29,8 +29,10 @@ export const onAuthStateChanged = (state) => {
           state.setState({user: user});
         }
         console.log('result is: ', data);
+        state.setState({loading: false});
       });
     } else {
+      state.setState({loading: false});
       state.setState({user: null})
       state.setState({changeUsername: false})
     }
