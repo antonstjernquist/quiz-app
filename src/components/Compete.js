@@ -9,6 +9,9 @@ function Counter(props) {
             <span className="counter">{props.counter + 1}</span>
             <span className="counter">of</span>
             <span className="counter">{props.alternative.length}</span>
+            <div>
+                <span>{props.timer} sec</span>
+            </div>
         </div>
     )
 }
@@ -17,7 +20,6 @@ class Quiz extends Component {
     constructor(props) {
         super(props);
     }
-
     render() {
         const cards = [];
         if (this.props.Quest) {
@@ -29,6 +31,7 @@ class Quiz extends Component {
                         key={alternative}
                         objKey={alternative}
                         alternative={QuestionObj}
+                        winner={this.props.winner === alternative}
                         loaded={this.props.loaded}
                     />
                 )
@@ -37,7 +40,7 @@ class Quiz extends Component {
         return (
             <div>
                 <h1 className={"quizHeader"}>{this.props.Quest.question}</h1>
-                <Counter counter={this.props.counter} alternative={this.props.allQuest}/>
+                <Counter timer={this.props.timer} counter={this.props.counter} alternative={this.props.allQuest}/>
                 <div className={"quiz-wrapper"}>
                     {cards.length > 0 && cards}
                 </div>
@@ -51,9 +54,9 @@ function Quizcard(props) {
         <div onClick={() => {
             props.guessTheAnswer(props.objKey)
         }} className={"quizCard-wrapper"}>
-            <div className={"quizCard" + (props.loaded ? ' quizCardFlipped' : null)}>
+            <div className={"quizCard" + (props.loaded ? ' quizCardFlipped' : "")}>
                 <div className={"back"}>
-                    <div className={"one"}>
+                    <div className={"one" + (props.winner ? ' winner' : "")}>
                         <h1>{props.alternative}</h1>
                     </div>
                 </div>
@@ -91,10 +94,14 @@ class Compete extends Component {
             counter: 0,
             loaded: false,
             questionsArr: [],
+            timer: 10,
         };
         this.categorySelect = this.categorySelect.bind(this);
         this.guessTheAnswer = this.guessTheAnswer.bind(this);
         this.loaded = this.loaded.bind(this);
+        this.handleWin = this.handleWin.bind(this);
+        this.handleLoss = this.handleLoss.bind(this);
+        this.initializeTimer = this.initializeTimer.bind(this);
     }
 
     categorySelect(event) {
@@ -107,23 +114,46 @@ class Compete extends Component {
         });
         setTimeout(() => {
             this.loaded();
+            this.initializeTimer()
         }, 4000);
     }
+    initializeTimer () {
+        const timer = setInterval(() => {
+            this.setState({timer: this.state.timer - 1});
+        },1000);
+        setTimeout(() => {
+            clearInterval(timer);
+        }, 10500);
 
+
+
+    }
     guessTheAnswer(ans) {
+        setTimeout(() => {
+            this.setState({
+                counter: this.state.counter + 1,
+                winner: ""
+            });
+        }, 2000);
         this.setState({
-            counter: this.state.counter + 1,
+            winner: this.state.questionsArr[this.state.counter].answer
         });
+
         console.log("ANS", ans);
         if (ans === this.state.questionsArr[this.state.counter].answer) {
-            alert("WIN");
+            this.handleWin();
         } else {
-            alert("Noob loss");
+            this.handleLoss();
         }
 
         console.log("Counter", this.state.counter);
     }
-
+    handleWin() {
+        console.log("WININININ")
+    }
+    handleLoss() {
+        console.log("LOSSSS")
+    }
     loaded() {
         this.setState({loaded: true});
     }
@@ -136,8 +166,10 @@ class Compete extends Component {
                 <Quiz
                     guessTheAnswer={this.guessTheAnswer}
                     loaded={this.state.loaded}
+                    timer={this.state.timer}
                     allQuest={this.state.questionsArr}
                     counter={this.state.counter}
+                    winner={this.state.winner}
                     Quest={this.state.questionsArr[this.state.counter]}
                 />
                 }
