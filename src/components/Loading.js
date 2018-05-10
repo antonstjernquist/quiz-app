@@ -2,10 +2,6 @@
 import React, { Component } from 'react';
 import './css/loading.css';
 
-/* initial_state */
-const initial_state = {
-  hej: 'hej'
-}
 
 /* Create the class component */
 class Loading extends Component {
@@ -13,7 +9,6 @@ class Loading extends Component {
   /* Constructor */
   constructor(props){
     super(props);
-    this.state = initial_state;
   }
 
   /* Render */
@@ -34,9 +29,7 @@ class Loading extends Component {
     } else {
       return null;
     }
-
   }
-
 }
 
 

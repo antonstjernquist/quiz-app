@@ -77,21 +77,23 @@ class Profile extends Component {
     } else {
       return (
         <div className="userProfileDiv">
-        <div>
-          <span> Profile picture </span>
-          <input type="text" onChange={ event => this.handleChange(event, 'photoURL')} value={this.state.inputPhoto} placeholder="Photo URL" />{" "}
-        </div>
-        <div>
-          <span> Name </span>
-          <input type="text" onChange={ event => this.handleChange(event, 'name')} value={this.state.inputName} placeholder="Name" />
-        </div>
-        <div>
-          <span> Email </span>
-          <input type="text" onChange={ event => this.handleChange(event, 'email')} value={this.state.inputEmail} placeholder="Email" />
-        </div>
-          <button className="editButton" onClick={this.toggleEdit}>
-            <i className="material-icons"> save </i>
-          </button>
+          <h3> Edit profile </h3>
+          <h4> Click your username in the header to change it </h4>
+          <div>
+            <span> Profile picture </span>
+            <input type="text" onChange={ event => this.handleChange(event, 'photoURL')} value={this.state.inputPhoto} placeholder="Photo URL" />{" "}
+          </div>
+          <div>
+            <span> Name </span>
+            <input type="text" onChange={ event => this.handleChange(event, 'name')} value={this.state.inputName} placeholder="Name" />
+          </div>
+          <div>
+            <span> Email </span>
+            <input type="text" onChange={ event => this.handleChange(event, 'email')} value={this.state.inputEmail} placeholder="Email" />
+          </div>
+            <button className="editButton" onClick={this.toggleEdit}>
+              <i className="material-icons"> save </i>
+            </button>
         </div>
       );
     }

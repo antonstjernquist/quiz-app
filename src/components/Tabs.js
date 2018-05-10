@@ -4,6 +4,7 @@ import Compete from "./Compete";
 import Addquestion from "./Addquestion";
 import Highscores from "./Highscores";
 import Profile from "./Profile";
+import Home from "./Home";
 import {database} from "../firebase/firebase";
 
 function Tab(props) {
@@ -64,7 +65,7 @@ class Tabs extends Component {
                 renderElement = <Addquestion user={this.props.user} />;
                 break;
             default:
-                renderElement = <h1>Landing Page, welcome page</h1>;
+                renderElement = <Home user={this.props.user} toggleLoadingState={this.props.toggleLoadingState}/>;
         }
 
         return (

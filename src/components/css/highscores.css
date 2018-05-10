@@ -31,7 +31,7 @@ div.highscoreWrapper > ul > li:nth-child(even){
   background-color: #2298c6;
 }
 div.highscoreWrapper > ul > li > span {
-  min-width: 180px;
+  width: 180px;
 }
 div.highscoreTableHeader {
   display: flex;
@@ -42,4 +42,34 @@ div.highscoreTableHeader {
 div.highscoreTableHeader > span {
   text-align: left;
   width: 180px;
+}
+div.highscoreTableHeader > span.ranking, div.highscoreWrapper > ul > li > span.ranking {
+  width: 90px;
+}
+div.highscoreWrapper > ul > li > span.ranking {
+  width: 80px;
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 1100px){
+  div.highscoreWrapper {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 1000px){
+  div.highscoreWrapper {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 900px){
+  div.highscoreWrapper {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 800px){
+  div.highscoreWrapper {
+    width: calc(100% - 20px);
+  }
 }

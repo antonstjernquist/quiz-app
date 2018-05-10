@@ -139,7 +139,7 @@ class CreateUser extends Component {
             <h1>Quiz App</h1>
             <h4>Change your username</h4>
             <h5>Cost: 2000 credits</h5>
-            <input onChange={this.handleChange} value={this.state.username}type="text" placeholder="Username.."/>
+            <input onChange={this.handleChange} value={this.state.username}type="text" placeholder="New username.."/>
             <br />
             <button onClick={this.handleClick}> Change username </button>
             <button onClick={this.props.toggleChangeUsername}> Close </button>

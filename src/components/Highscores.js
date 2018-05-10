@@ -46,14 +46,17 @@ class Highscores extends Component {
         }
       })
       let list = oldList.map((user, index) =>
-        <li key={user.uid}> <span>{user.username} </span> <span> {user.credits} </span></li>
+        <li key={user.uid}> <span className="ranking"> {index + 1} </span> <span>{user.username} </span> <span> {user.credits} </span> <span> {user.displayName.split(' ')[0]} </span> <span> {user.admin.toString()} </span></li>
       )
         return (
             <div className="highscoreWrapper">
                 <h1> Highscores </h1>
                 <div className="highscoreTableHeader">
+                  <span className="ranking"> Ranking </span>
                   <span> Username </span>
                   <span> Credits </span>
+                  <span> Name</span>
+                  <span> Admin </span>
                 </div>
                 <ul>
                   {list}

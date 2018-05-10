@@ -103,7 +103,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Loading loading={this.state.loading} />
+        <Loading loading={this.state.loading} toggleLoadingState={this.toggleLoadingState}/>
         <CreateUser toggleChangeUsername={this.toggleChangeUsername} doRender={this.state.changeUsername} setUser={this.setUser} user={this.state.user} />
         <Header toggleChangeUsername={this.toggleChangeUsername} user={this.state.user} toggleLoadingState={this.toggleLoadingState}/>
         <Tabs user={this.state.user} tabs={tabs} loading={this.state.loading} toggleLoadingState={this.toggleLoadingState}/>

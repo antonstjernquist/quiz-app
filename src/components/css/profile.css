@@ -8,6 +8,12 @@ div.userProfileDiv {
   position: relative;
 }
 
+div.userProfileDiv > h3, div.userProfileDiv > h4 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100;
+  margin: 5px 0px;
+}
+
 div.userProfileDiv > div > span {
   margin-left: 35px;
   margin-top: 25px;
@@ -38,13 +44,13 @@ div.userProfileDiv > div {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
 }
 div.userProfileDiv > div > input {
   background-color: #1c7fcc;
   color: #fefefe;
-  margin: 10px;
-  width: 80%;
+  margin-left: 35px;
+  margin-top: 8px;
+  width: 90%;
   border-radius: 4px;
 }
 
