@@ -19,6 +19,9 @@ class Highscores extends Component {
       database.updateHighscores(this);
     }
 
+    componentWillUnMount(){
+      database.stopUpdatingHighscores();
+    }
     updateUserList = () => {
 
       let prevState = this;

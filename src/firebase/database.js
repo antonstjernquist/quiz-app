@@ -48,6 +48,21 @@ export const setCredits = (uid, credits) => {
   return database.ref('users/' + uid).update({credits: Number(credits)});
 }
 
+export const retrieveNews = state => {
+  let newsList = [];
+  console.log('Retrieving news..');
+  database.ref('news/').on('child_added', function(snapshot){
+    let data = snapshot.val();
+    newsList.push(data);
+    console.log('Pushing');
+    state.setState({newsList: newsList});
+  })
+}
+
+export const newArticle = obj => {
+  database.ref('news/').push(obj);
+}
+
 export const takeCredits = (uid, credits) => {
   console.log('Taking credits..', credits);
 
@@ -88,4 +103,8 @@ export const updateHighscores = state => {
   database.ref('users/').on('child_changed', snapshot => {
     state.updateUserList();
   });
+}
+
+export const stopUpdatingHighscores = () => {
+  database.ref('users/').off();
 }

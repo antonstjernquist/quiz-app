@@ -93,9 +93,9 @@ class App extends Component {
   }
 
   render() {
-    let tabs = ['compete', 'highscore'];
+    let tabs = ['home', 'compete', 'highscore'];
     if(this.state.user){
-      tabs = ['compete', 'highscore', 'profil'];
+      tabs = ['home', 'compete', 'highscore', 'profil'];
       if(this.state.user.admin === true){
         tabs.push('add question');
       }

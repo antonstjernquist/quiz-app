@@ -4,7 +4,7 @@ div.homeDiv {
   color: #fefefe;
   width: 60%;
   margin: 25px auto;
-  padding-top: 15px;
+  padding-top: 45px;
   border-radius: 5px;
   max-width: 1000px;
   padding-bottom: 25px;
@@ -13,6 +13,61 @@ div.homeDiv {
 div.homeDiv > button {
   background-color: #164e71;
 }
-div.homeDiv > button:hover {
+div.homeDiv > button:hover, div.newArticle > button:hover {
   background-color: #1e6290;
+}
+
+
+/* News */
+div.newsHolder {
+  padding: 10px;
+}
+
+div.newsDiv {
+  padding: 12px 12px 5px;
+  background-color: #164e71;
+  border-radius: 4px;
+  margin: 25px;
+  text-align: left;
+}
+div.homeDiv h2 {
+  margin: 50px 35px -20px;
+  text-align: left;
+}
+div.newsDiv > h3, div.newsDiv > p {
+  margin: -2px 0 8px;
+  padding: 0px;
+}
+
+div.newArticle {
+  display: flex;
+  background-color: #164e71;
+  flex-direction: column;
+  width: 80%;
+  margin: 5px auto;
+  border-radius: 5px;
+  padding: 5px;
+}
+div.newArticle > input {
+  margin: 10px;
+  width: calc(100% - 60px);
+  color: #f1f1f1;
+  background-color: #19577e;
+  border-radius: 3px;
+}
+div.newArticle > textarea {
+  padding: 10px;
+  font-family: sans-serif;
+  border-radius: 3px;
+  margin: 10px;
+  background-color: #19577e;
+  color: #f1f1f1;
+  border: none;
+  max-width: 95%;
+  min-height: 140px;
+}
+
+div.newArticle > button {
+  margin: 0px 10px 7px;
+  background-color: #305b77;
 }

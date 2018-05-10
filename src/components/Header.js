@@ -41,9 +41,14 @@ class Header extends Component {
                     <div>
                         <p onClick={(e) => {
                             let prevState = this;
-                            auth.doLogInWithGoogle().then(function () {
-                                prevState.props.toggleLoadingState();
-                            });
+                            auth.doLogInWithGoogle()
+                            .then(function () {
+                                prevState.props.toggleLoadingState(false)
+                            })
+                            .catch(error => {
+                              console.log('Error: ', error);
+                              prevState.props.toggleLoadingState(false)
+                            })
                             this.props.toggleLoadingState();
                         }} className="link"> Login </p>
                     </div>
