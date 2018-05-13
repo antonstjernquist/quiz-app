@@ -52,6 +52,7 @@ class Highscores extends Component {
         if(user.wins){
           return <li key={user.uid}> <span className="ranking"> {index + 1} </span> <span> <img src={user.photoURL} alt="Profile"/> {user.username} </span> <span> {user.wins}/{user.wins + user.loss} </span> <span> {user.credits} </span> </li>
         }
+        return null;
       }
 
       )

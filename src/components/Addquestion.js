@@ -100,7 +100,8 @@ class Addquestion extends Component {
             category: '',
             list: [],
             newQuestion: null,
-            questionsNum: ''
+            questionsNum: '',
+            difficulty: ''
         };
     }
 
@@ -154,7 +155,7 @@ class Addquestion extends Component {
     handleFetch = () => {
       let prevState = this;
       let num = this.state.questionsNum ? Number(this.state.questionsNum) : 5;
-      let difficulty = this.state.difficulty ? this.state.difficulty : 'easy';
+      let difficulty = this.state.difficulty ? this.state.difficulty.toLowerCase() : 'easy';
       fetch('https://opentdb.com/api.php?amount='+num+'&difficulty='+difficulty+'&type=multiple')
       .then(res => {
         return res.json();
@@ -188,7 +189,7 @@ class Addquestion extends Component {
 
         /* Randomize arr */
         while(newArr.length < 4){
-          var temp = parseInt( Math.random() * 4);
+          var temp = parseInt( Math.random() * 4, 10);
           console.log('Temp is: ', temp);
           if(newArr.includes(arr[temp])){
             continue;
@@ -281,7 +282,7 @@ class Addquestion extends Component {
                 </div>
 
                 <div className="searchDiv">
-                  <h1> Search for a question </h1>
+                  <h1> Search for a question with <a target="_blank"href="https://opentdb.com/"> Open Trivia Database </a></h1>
                   <input onChange={this.handleNumber} value={this.state.questionsNum} type="number" placeholder="Number of questions.. (Max 50)"/>
 
                   <span> Difficulty </span>

@@ -16,9 +16,6 @@ function Counter(props) {
 }
 
 class Quiz extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const cards = [];
     if (this.props.Quest) {
@@ -104,7 +101,8 @@ class Compete extends Component {
       questionsArr: [],
       timer: 10,
       stop: false,
-      limit: 3
+      limit: 3,
+      defaultTimer: null
     };
     this.categorySelect = this.categorySelect.bind(this);
     this.guessTheAnswer = this.guessTheAnswer.bind(this);
@@ -112,6 +110,14 @@ class Compete extends Component {
     this.handleWin = this.handleWin.bind(this);
     this.handleLoss = this.handleLoss.bind(this);
     this.initializeTimer = this.initializeTimer.bind(this);
+  }
+
+  componentDidMount(){
+    database.retrieveSettings()
+    .then(result => {
+      let data = result.val();
+      this.setState({defaultTimer: data.timer, limit: data.limit});
+    })
   }
 
   categorySelect(event) {
@@ -125,7 +131,7 @@ class Compete extends Component {
     const randomSort2 = arr => {
         let newArr = [];
         while(newArr.length < arr.length){
-            var temp = parseInt( Math.random() * arr.length);
+            var temp = parseInt( Math.random() * arr.length, 10);
             if(newArr.includes(arr[temp])){
               continue;
             } else {
@@ -150,9 +156,10 @@ class Compete extends Component {
     }, 2000);
   }
   initializeTimer() {
+    const defaultTimer = this.state.defaultTimer;
     console.log('Starting timer.');
     this.setState({stop: false});
-    this.setState({timer: 10});
+    this.setState({timer: defaultTimer});
     const timer = setInterval(() => {
       if(this.state.timer){
         this.setState({ timer: this.state.timer - 1 });

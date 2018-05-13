@@ -5,12 +5,6 @@ import './css/loading.css';
 
 /* Create the class component */
 class Loading extends Component {
-
-  /* Constructor */
-  constructor(props){
-    super(props);
-  }
-
   /* Render */
   render(){
     if(this.props.loading){

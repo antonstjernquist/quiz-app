@@ -1,0 +1,28 @@
+div.settingsHolder {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  padding: 20px;
+  border-radius: 4px;
+  margin: 15px auto 5px;
+}
+
+div.settingsHolder > span {
+  text-align: left;
+  color: #fefefe;
+}
+div.settingsHolder > input {
+  color: #fefefe;
+  border-radius: 4px;
+  background-color: #3e97dd;
+  margin: 15px;
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}

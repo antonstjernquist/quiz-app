@@ -23,6 +23,13 @@ export function getQuestions() {
 export const retrieveAllUsers = () => {
   return database.ref('users/').once('value');
 }
+export const retrieveSettings = () => {
+  return database.ref('settings/').once('value');
+}
+
+export const saveSettings = settings => {
+  database.ref('settings/').set(settings);
+}
 
 export const newQuestionFromSearch = (category, question) => {
   database.ref('questions/' + category).push(question);

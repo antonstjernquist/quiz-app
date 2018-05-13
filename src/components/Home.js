@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { auth, providerData, database} from '../firebase';
+import { auth, database} from '../firebase';
 import './css/home.css';
 
 

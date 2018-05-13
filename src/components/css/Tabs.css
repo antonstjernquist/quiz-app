@@ -30,3 +30,11 @@
     transition: 0.2s;
     cursor: pointer;
 }
+
+
+/* Settings div */
+.settingsDiv > h1 {
+  font-family: 'Acme', sans-serif;
+  color: #fefefe;
+  margin-top: 32px;
+}
