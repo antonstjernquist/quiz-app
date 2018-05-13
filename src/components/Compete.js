@@ -170,6 +170,7 @@ class Compete extends Component {
   }
 
   stopTimer = () => {
+    this.setState({timer: 10});
     this.setState({stop: true});
   }
 
