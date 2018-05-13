@@ -3,7 +3,6 @@ import { database } from '../firebase';
 import "./css/Compete.css";
 
 function Counter(props) {
-  console.log("Le quest", props.alternative);
   return (
     <div className="Counter-wrapper">
     <div className="timer"><span> {props.timer}</span></div>
@@ -121,7 +120,6 @@ class Compete extends Component {
     } else {
       e = event.target.value
     }
-    console.log('Questions: ', this.props.questions);
     const randomSort2 = arr => {
         let newArr = [];
         while(newArr.length < arr.length){
@@ -147,10 +145,10 @@ class Compete extends Component {
       this.loaded();
       this.setState({ start: true });
       this.initializeTimer();
-      console.log('is this eMPTY?!?1+',this.state.questionsArr);
     }, 2000);
   }
   initializeTimer() {
+    console.log('Starting timer.');
     this.setState({stop: false});
     this.setState({timer: 10});
     const timer = setInterval(() => {
@@ -161,7 +159,7 @@ class Compete extends Component {
         console.log('Stop is: ', this.state.stop);
 
         /* If timer is 0, guessTheAnswer */
-        if(this.state.timer <= 0){
+        if(this.state.timer <= 0 && !this.state.stop){
           this.guessTheAnswer('Out of time!');
         }
         clearInterval(timer);
@@ -170,8 +168,7 @@ class Compete extends Component {
   }
 
   stopTimer = () => {
-    this.setState({timer: 10});
-    this.setState({stop: true});
+    this.setState({stop: true, timer: null});
   }
 
   guessTheAnswer(ans) {
@@ -216,7 +213,9 @@ class Compete extends Component {
   loaded() {
     this.setState({ loaded: true });
   }
-
+  componentWillUnmount(){
+    this.stopTimer();
+  }
   render() {
     return (
       <div className={"competeWrapper"}>

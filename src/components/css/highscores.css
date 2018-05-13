@@ -19,6 +19,7 @@ div.highscoreWrapper > ul {
 div.highscoreWrapper > ul > li {
   margin: 0px 25px;
   display: flex;
+  align-items: center;
   list-style: none;
   padding: 15px;
   text-align: left;
@@ -32,6 +33,12 @@ div.highscoreWrapper > ul > li:nth-child(even){
 }
 div.highscoreWrapper > ul > li > span {
   width: 180px;
+  display: flex;
+  align-items: center;
+}
+div.highscoreWrapper > ul > li > span > img {
+  width: 30px;
+  height: 30px;
 }
 div.highscoreTableHeader {
   display: flex;

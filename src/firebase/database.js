@@ -119,12 +119,10 @@ export const editUser = (uid, newUser) => {
 export const updateUser = (uid, state) => {
   console.log('Starting listener on user..');
   return database.ref('users/').on('child_changed', function(snapshot){
-    console.log('Updating user..');
     let data = snapshot.val();
     let key = snapshot.key;
 
     if(key === uid){
-      console.log('Updated user straight from database: ', data);
       state.setState({user: data});
     }
   })
