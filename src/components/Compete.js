@@ -110,6 +110,7 @@ class Compete extends Component {
   }
 
   categorySelect(event) {
+    this.stopTimer();
     let e;
     if (!event.target.value) {
       e = this.state.selectedCategory;
