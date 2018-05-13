@@ -98,7 +98,8 @@ class Compete extends Component {
       counter: 0,
       loaded: false,
       questionsArr: [],
-      timer: 10
+      timer: 10,
+      stop: false
     };
     this.categorySelect = this.categorySelect.bind(this);
     this.guessTheAnswer = this.guessTheAnswer.bind(this);
@@ -124,28 +125,48 @@ class Compete extends Component {
     setTimeout(() => {
       this.loaded();
       this.setState({ start: true });
+      this.initializeTimer();
     }, 4000);
   }
   initializeTimer() {
+    this.setState({stop: false});
+    this.setState({timer: 10});
     const timer = setInterval(() => {
       this.setState({ timer: this.state.timer - 1 });
+      if(this.state.timer <= 0 || this.state.stop === true){
+        console.log('Timer stopped!!');
+        console.log('Timer is: ', this.state.timer);
+        console.log('Stop is: ', this.state.stop);
+
+        /* If timer is 0, guessTheAnswer */
+        if(this.state.timer <= 0){
+          this.guessTheAnswer('Out of time!');
+        }
+        clearInterval(timer);
+      }
     }, 1000);
-    setTimeout(() => {
-      clearInterval(timer);
-    }, 10500);
   }
+
+  stopTimer = () => {
+    this.setState({stop: true});
+  }
+
   guessTheAnswer(ans) {
+    this.stopTimer();
     setTimeout(() => {
+
+      /* Only start the timer again if there's questions left to answer! */
+      if(this.state.counter + 1 < this.state.questionsArr.length){
+        this.initializeTimer();
+      }
+
+      /* Increase the counter */
       this.setState({
         counter: this.state.counter + 1,
         winner: ""
       });
     }, 2000);
-    this.setState({ start: false, stop: true });
 
-    this.setState({
-      winner: this.state.questionsArr[this.state.counter].answer
-    });
 
     console.log("ANS", ans);
     if (ans === this.state.questionsArr[this.state.counter].answer) {
@@ -173,6 +194,7 @@ class Compete extends Component {
           categorySelect={this.categorySelect}
           questions={this.props.questions}
         />
+        {this.state.timer}
         {this.state.selectedCategory &&
           this.state.counter + 1 <= this.state.questionsArr.length && (
             <Quiz
