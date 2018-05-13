@@ -282,7 +282,7 @@ class Addquestion extends Component {
                 </div>
 
                 <div className="searchDiv">
-                  <h1> Search for a question with <a target="_blank"href="https://opentdb.com/"> Open Trivia Database </a></h1>
+                  <h1> Search for a question with <a rel="noopener noreferrer" target="_blank"href="https://opentdb.com/"> Open Trivia Database </a></h1>
                   <input onChange={this.handleNumber} value={this.state.questionsNum} type="number" placeholder="Number of questions.. (Max 50)"/>
 
                   <span> Difficulty </span>
