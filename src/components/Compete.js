@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { database } from '../firebase';
 import "./css/Compete.css";
 
 function Counter(props) {
@@ -179,6 +180,7 @@ class Compete extends Component {
     console.log("Counter", this.state.counter);
   }
   handleWin() {
+    database.addCredits(this.props.user.uid, 50);
     console.log("WININININ");
   }
   handleLoss() {

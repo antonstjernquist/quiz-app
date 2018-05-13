@@ -48,6 +48,16 @@ export const setCredits = (uid, credits) => {
   return database.ref('users/' + uid).update({credits: Number(credits)});
 }
 
+export const addCredits = (uid, credits) => {
+  console.log('Increasing balance by: ' + credits);
+
+  database.ref('users/' + uid + '/credits').once('value', function (snapshot){
+    let data = snapshot.val();
+    let newBalance = data + credits
+    database.ref('users/' + uid + '/credits').set(newBalance);
+  })
+}
+
 export const retrieveNews = state => {
   let newsList = [];
   console.log('Retrieving news..');

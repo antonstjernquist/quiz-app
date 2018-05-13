@@ -53,7 +53,7 @@ class Tabs extends Component {
         let renderElement = null;
         switch (this.state.activeElement) {
             case 'compete':
-                renderElement = <Compete questions={this.state.questions}/>;
+                renderElement = <Compete user={this.props.user} questions={this.state.questions}/>;
                 break;
             case 'highscore':
                 renderElement = <Highscores />;
