@@ -32,11 +32,6 @@
 .quizCard h1 {
     color: #3cadf0;
 }
-.quizCard-wrapper .quizCard:hover {
-    box-shadow: 0 0 30px -3px #f5eb7d;
-    cursor: pointer;
-    transition: 0.2s;
-}
 
 .back {
     position: absolute;
@@ -81,6 +76,17 @@
     background-image: url("http://8gmwp015fo-flywheel.netdna-ssl.com/wp-content/uploads/sites/4/2014/05/cupcake-cardback.png");
 }
 
+.back:hover {
+    box-shadow: 0 0 30px -3px #f5eb7d;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.front .one:hover {
+    cursor: not-allowed;
+    box-shadow: none !important;
+}
+
 .quizCard {
     position: absolute;
     width: 100%;
@@ -117,4 +123,10 @@
 .counter {
     color: #ccc;
     padding: 0 3px;
+}
+
+.timer {
+  font-family: 'Acme', sans-serif;
+  color: #fefefe;
+  font-size: 2.2em;
 }

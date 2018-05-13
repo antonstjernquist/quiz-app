@@ -53,9 +53,30 @@ export const addCredits = (uid, credits) => {
 
   database.ref('users/' + uid + '/credits').once('value', function (snapshot){
     let data = snapshot.val();
-    let newBalance = data + credits
+    let newBalance = data + credits;
     database.ref('users/' + uid + '/credits').set(newBalance);
   })
+}
+
+export async function addWin(uid) {
+  database.ref('users/' + uid + '/wins').transaction(function (snapshot){
+    if (snapshot) {
+      snapshot++;
+    } else {
+      snapshot = 1;
+    }
+    return snapshot;
+  })
+}
+export async function addLoss(uid) {
+    database.ref('users/' + uid + '/loss').transaction(function (snapshot){
+      if (snapshot) {
+        snapshot++;
+      } else {
+        snapshot = 1;
+      }
+      return snapshot;
+    })
 }
 
 export const retrieveNews = state => {

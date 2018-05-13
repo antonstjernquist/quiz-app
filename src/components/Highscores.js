@@ -40,7 +40,7 @@ class Highscores extends Component {
 
     render() {
       let oldList = this.state.userlist.sort( (x,y) => {
-        if(x.credits < y.credits) {
+        if(x.wins < y.wins) {
           return 1;
         } else if(x.credits > y.credits){
           return -1;
@@ -48,8 +48,12 @@ class Highscores extends Component {
           return 0
         }
       })
-      let list = oldList.map((user, index) =>
-        <li key={user.uid}> <span className="ranking"> {index + 1} </span> <span>{user.username} </span> <span> {user.credits} </span> <span> {user.displayName.split(' ')[0]} </span> <span> {user.admin.toString()} </span></li>
+      let list = oldList.map((user, index) => {
+        if(user.wins){
+          return <li key={user.uid}> <span className="ranking"> {index + 1} </span> <span>{user.username} </span> <span> {user.wins}/{user.wins + user.loss} </span> <span> {user.credits} </span> </li>
+        }
+      }
+
       )
         return (
             <div className="highscoreWrapper">
@@ -57,9 +61,8 @@ class Highscores extends Component {
                 <div className="highscoreTableHeader">
                   <span className="ranking"> Ranking </span>
                   <span> Username </span>
-                  <span> Credits </span>
-                  <span> Name</span>
-                  <span> Admin </span>
+                  <span> Score </span>
+                  <span> Credits</span>
                 </div>
                 <ul>
                   {list}

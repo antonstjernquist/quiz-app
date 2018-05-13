@@ -6,6 +6,7 @@ function Counter(props) {
   console.log("Le quest", props.alternative);
   return (
     <div className="Counter-wrapper">
+    <div className="timer"><span> {props.timer}</span></div>
       <span className="counter-question">Question </span>
       <span className="counter">{props.counter + 1}</span>
       <span className="counter">of</span>
@@ -41,6 +42,7 @@ class Quiz extends Component {
         <h1 className={"quizHeader"}>{this.props.Quest.question}</h1>
         <Counter
           counter={this.props.counter}
+          timer={this.props.timer}
           alternative={this.props.allQuest}
         />
         <div className={"quiz-wrapper"}>{cards.length > 0 && cards}</div>
@@ -52,13 +54,13 @@ class Quiz extends Component {
 function Quizcard(props) {
   return (
     <div
-      onClick={() => {
-        props.guessTheAnswer(props.objKey);
-      }}
+
       className={"quizCard-wrapper"}
     >
       <div className={"quizCard" + (props.loaded ? " quizCardFlipped" : "")}>
-        <div className={"back"}>
+        <div className={"back"} onClick={() => {
+          props.guessTheAnswer(props.objKey);
+        }}>
           <div className={"one" + (props.winner ? " winner" : "")}>
             <h1>{props.alternative}</h1>
           </div>
@@ -100,7 +102,8 @@ class Compete extends Component {
       loaded: false,
       questionsArr: [],
       timer: 10,
-      stop: false
+      stop: false,
+      limit: 3
     };
     this.categorySelect = this.categorySelect.bind(this);
     this.guessTheAnswer = this.guessTheAnswer.bind(this);
@@ -118,17 +121,34 @@ class Compete extends Component {
     } else {
       e = event.target.value
     }
+    console.log('Questions: ', this.props.questions);
+    const randomSort2 = arr => {
+        let newArr = [];
+        while(newArr.length < arr.length){
+            var temp = parseInt( Math.random() * arr.length);
+            if(newArr.includes(arr[temp])){
+              continue;
+            } else {
+              newArr.push(arr[temp]);
+            }
+        }
+        return newArr.slice(0, this.state.limit);
+    }
+
+    const questionsArray = randomSort2(Object.values(this.props.questions[e]));
     this.setState({
       loaded: false,
       counter: 0,
       selectedCategory: e,
-      questionsArr: Object.values(this.props.questions[e])
+      questionsArr: questionsArray
     });
+
     setTimeout(() => {
       this.loaded();
       this.setState({ start: true });
       this.initializeTimer();
-    }, 4000);
+      console.log('is this eMPTY?!?1+',this.state.questionsArr);
+    }, 2000);
   }
   initializeTimer() {
     this.setState({stop: false});
@@ -182,11 +202,14 @@ class Compete extends Component {
 
     console.log("Counter", this.state.counter);
   }
+
   handleWin() {
     database.addCredits(this.props.user.uid, 50);
+    database.addWin(this.props.user.uid);
     console.log("WININININ");
   }
   handleLoss() {
+    database.addLoss(this.props.user.uid);
     console.log("LOSSSS");
   }
   loaded() {
@@ -200,7 +223,6 @@ class Compete extends Component {
           categorySelect={this.categorySelect}
           questions={this.props.questions}
         />
-        {this.state.timer}
         {this.state.selectedCategory &&
           this.state.counter + 1 <= this.state.questionsArr.length && (
             <Quiz
@@ -208,6 +230,7 @@ class Compete extends Component {
               loaded={this.state.loaded}
               allQuest={this.state.questionsArr}
               counter={this.state.counter}
+              timer={this.state.timer}
               winner={this.state.winner}
               Quest={this.state.questionsArr[this.state.counter]}
             />
