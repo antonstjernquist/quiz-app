@@ -152,7 +152,10 @@ class Compete extends Component {
     this.setState({stop: false});
     this.setState({timer: 10});
     const timer = setInterval(() => {
-      this.setState({ timer: this.state.timer - 1 });
+      if(this.state.timer){
+        this.setState({ timer: this.state.timer - 1 });
+      }
+      
       if(this.state.timer <= 0 || this.state.stop === true){
         console.log('Timer stopped!!');
         console.log('Timer is: ', this.state.timer);
