@@ -24,6 +24,10 @@ export const retrieveAllUsers = () => {
   return database.ref('users/').once('value');
 }
 
+export const newQuestionFromSearch = (category, question) => {
+  database.ref('questions/' + category).push(question);
+}
+
 export const makeAdmin = uid => {
   database.ref('users/' + uid + '/admin').set(true);
 }

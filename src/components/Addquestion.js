@@ -21,6 +21,68 @@ class QuestionObject {
     }
 }
 
+function QuestionList (props){
+  if(props.list.length){
+    let list = props.list.map((item, index) => {
+      return (
+        <div className="resultQuestion" key={index + ':' + item.difficulty}>
+          <h2> {item.question} </h2>
+          <br />
+          Answers:
+          <br />
+          {item.correct_answer.toString()}
+          <br />
+          {item.incorrect_answers[0].toString()}
+          <br />
+          {item.incorrect_answers[1].toString()}
+          <br />
+          {item.incorrect_answers[2].toString()}
+          <br />
+          <button onClick={event => props.handleClick(event, index)}> Add this question </button>
+        </div>)
+    });
+
+    return (
+      <div className="resultDiv">
+        <h1> Search results </h1>
+        <ul>
+          {list}
+        </ul>
+      </div>
+    )
+  } else {
+    return null;
+  }
+
+}
+
+class NewQuestion extends Component{
+  constructor(props){
+    super(props);
+    console.log('DISPLAYING NEW QUESTION');
+    this.state = {
+      category: ''
+    }
+  }
+
+  handleChange = event => {
+    this.setState({category: event.target.value });
+  }
+
+  render(){
+    if(this.props.question){
+      return (<div className="popup">
+        <h3> Choose category </h3>
+        <input type="text" onChange={this.handleChange}value={this.state.category} placeholder="Category.."/>
+        <button onClick={event => this.props.handleClick(event, this.state.category)}> Add </button>
+        <button onClick={event => this.props.handleClick(event, null)}> Close </button>
+      </div>)
+    } else {
+      return null;
+    }
+  }
+}
+
 class Addquestion extends Component {
     /* Constructor */
     constructor(props) {
@@ -35,7 +97,10 @@ class Addquestion extends Component {
             alt3: '',
             alt4: '',
             answer: '',
-            category: ''
+            category: '',
+            list: [],
+            newQuestion: null,
+            questionsNum: ''
         };
     }
 
@@ -86,6 +151,88 @@ class Addquestion extends Component {
         }
     }
 
+    handleFetch = () => {
+      let prevState = this;
+      let num = this.state.questionsNum ? Number(this.state.questionsNum) : 5;
+      let difficulty = this.state.difficulty ? this.state.difficulty : 'easy';
+      fetch('https://opentdb.com/api.php?amount='+num+'&difficulty='+difficulty+'&type=multiple')
+      .then(res => {
+        return res.json();
+      })
+      .then(json => {
+        console.log('Result: ', json.results);
+        prevState.setState({list: json.results});
+      })
+    }
+
+    newQuestionClick = (event, index) => {
+      console.log('This runs');
+      this.setState({newQuestion: this.state.list[index]});
+    }
+
+    addQuestion = (event, category) => {
+      if(category){
+
+        /* Add it */
+        let q = this.state.newQuestion;
+        let arr = [];
+
+        /* Push into ARR */
+        arr.push(q.incorrect_answers[0]);
+        arr.push(q.incorrect_answers[1]);
+        arr.push(q.incorrect_answers[2]);
+        arr.push(q.correct_answer);
+
+        /* Create new arr */
+        let newArr = [];
+
+        /* Randomize arr */
+        while(newArr.length < 4){
+          var temp = parseInt( Math.random() * 4);
+          console.log('Temp is: ', temp);
+          if(newArr.includes(arr[temp])){
+            continue;
+          } else {
+            newArr.push(arr[temp]);
+          }
+        }
+
+        /* Answer is in position? */
+        let answerPosition = newArr.indexOf(q.correct_answer);
+
+        /* Retrieve correct alt */
+        let answer = 'alt' + (answerPosition + 1);
+        /* Create the object to be sent to the database */
+        let questionObject = {
+          question: q.question,
+          category: category,
+          alternatives: {
+            alt1: newArr[0],
+            alt2: newArr[1],
+            alt3: newArr[2],
+            alt4: newArr[3]
+          },
+          answer: answer
+        }
+        console.log('Questions Object: ', questionObject);
+        database.newQuestionFromSearch(category, questionObject);
+        console.log('Category is: ', category);
+        console.log('Question is: ', this.state.newQuestion);
+      }
+      /* else close (either way) */
+      this.setState({newQuestion: null});
+    }
+
+    handleSelectChange = event => {
+      console.log('Select was changed to', event.target.value);
+      this.setState({difficulty: event.target.value});
+    }
+
+    handleNumber = event => {
+      console.log('New question number: ', event.target.value);
+      this.setState({questionsNum: event.target.value});
+    }
+
     /* Return */
     render() {
         return (
@@ -133,6 +280,23 @@ class Addquestion extends Component {
                     <button onClick={this.addQuestion}> Add Question</button>
                 </div>
 
+                <div className="searchDiv">
+                  <h1> Search for a question </h1>
+                  <input onChange={this.handleNumber} value={this.state.questionsNum} type="number" placeholder="Number of questions.. (Max 50)"/>
+
+                  <span> Difficulty </span>
+                  <select onChange={this.handleSelectChange}>
+                      <option> Easy </option>
+                      <option> Medium </option>
+                      <option> Hard </option>
+                  </select>
+
+                  <button onClick={this.handleFetch}> {this.state.list.length ? 'Refresh' : 'Search'} </button>
+
+                </div>
+
+                <QuestionList handleClick={this.newQuestionClick} list={this.state.list}/>
+                <NewQuestion handleClick={this.addQuestion} question={this.state.newQuestion}/>
             </div>
         )
     }

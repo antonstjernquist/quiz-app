@@ -86,7 +86,9 @@ function ChooseCategory(props) {
     return (
       <div className="chooseCategory-wrapper">
         <span className="chooseCategory">Choose category </span>
+        <div className="selectWrapper">
         <select onChange={props.categorySelect}>{options}</select>
+        </div>
       </div>
     );
   }
@@ -155,7 +157,7 @@ class Compete extends Component {
       if(this.state.timer){
         this.setState({ timer: this.state.timer - 1 });
       }
-      
+
       if(this.state.timer <= 0 || this.state.stop === true){
         console.log('Timer stopped!!');
         console.log('Timer is: ', this.state.timer);
