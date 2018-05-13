@@ -169,6 +169,9 @@ class Compete extends Component {
       });
     }, 2000);
 
+    this.setState({
+      winner: this.state.questionsArr[this.state.counter].answer
+    });
 
     console.log("ANS", ans);
     if (ans === this.state.questionsArr[this.state.counter].answer) {
