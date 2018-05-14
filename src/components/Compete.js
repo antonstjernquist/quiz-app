@@ -135,8 +135,6 @@ class Compete extends Component {
         this.categorySelect("save");
       }, 1000);
     }
-    console.log("LS Count", localStorage.getItem("counter"));
-    console.log("LS Category", localStorage.getItem("cat"));
   }
 
   categorySelect(event) {
@@ -144,11 +142,8 @@ class Compete extends Component {
     let e;
     if (event === "save") {
       e = localStorage.getItem("cat");
-      localStorage.incrementTransaction("counter", 1);
-      this.handleLoss();
     } else if (event === "newGame") {
       e = this.state.selectedCategory;
-      console.log(this.state.selectedCategory);
     } else {
       e = event.target.value;
     }
@@ -173,14 +168,25 @@ class Compete extends Component {
     });
 
     setTimeout(() => {
-      this.loaded();
-      this.setState({ start: true });
-      this.initializeTimer();
+      const hasMore = Number(localStorage.getItem('counter')) <= this.state.questionsArr.length;
+      if (hasMore && event === "save") {
+          localStorage.incrementTransaction("counter", 1);
+          this.handleLoss();
+      }
+      if (hasMore) {
+          this.loaded();
+          this.setState({ start: true });
+          this.initializeTimer();
+      } else {
+          localStorage.setItem('counter', "0");
+          localStorage.setItem('cat', "");
+      }
+
     }, 2000);
   }
   initializeTimer() {
     const defaultTimer = this.state.defaultTimer;
-    console.log("Starting timer.");
+    // console.log("Starting timer.");
     this.setState({ stop: false });
     this.setState({ timer: defaultTimer });
     const timer = setInterval(() => {
@@ -189,9 +195,9 @@ class Compete extends Component {
       }
 
       if (this.state.timer <= 0 || this.state.stop === true) {
-        console.log("Timer stopped!!");
-        console.log("Timer is: ", this.state.timer);
-        console.log("Stop is: ", this.state.stop);
+        // console.log("Timer stopped!!");
+        // console.log("Timer is: ", this.state.timer);
+        // console.log("Stop is: ", this.state.stop);
 
         /* If timer is 0, guessTheAnswer */
         if (this.state.timer <= 0 && !this.state.stop) {
@@ -224,34 +230,33 @@ class Compete extends Component {
       winner: this.state.questionsArr[this.state.counter].answer
     });
 
-    console.log("ANS", ans);
     if (ans === this.state.questionsArr[this.state.counter].answer) {
       this.handleWin();
     } else {
       this.handleLoss();
     }
     localStorage.setItem("counter", "" + this.state.counter);
-    console.log(localStorage.getItem("counter"));
-    console.log("Counter", this.state.counter);
   }
 
   handleWin() {
     database.addCredits(this.props.user.uid, 50);
     database.addWin(this.props.user.uid);
-    console.log("WININININ");
   }
   handleLoss() {
     database.addLoss(this.props.user.uid);
-    console.log("LOSSSS");
   }
   loaded() {
     this.setState({ loaded: true });
   }
   componentWillUnmount() {
     this.stopTimer();
-    if (this.state.selectedCategory) {
-      localStorage.setItem("cat", this.state.selectedCategory);
-    }
+    console.log(this);
+      if(!this._unmounted) {
+          if (this.state.selectedCategory) {
+              localStorage.setItem("cat", this.state.selectedCategory);
+          }
+      }
+
   }
   render() {
     return (
