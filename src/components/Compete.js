@@ -280,7 +280,7 @@ class Compete extends Component {
       console.log('Quiz was unmounted while active. Saving state: ', this.state);
       this.props.setCompeteState(this.state);
     } else {
-      localStorage.setItem("cat", '');
+      this.props.setCompeteState(null);
     }
       if(!this._unmounted) {
           if (this.state.selectedCategory) {
