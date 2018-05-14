@@ -96,16 +96,26 @@ function ChooseCategory(props) {
 class Compete extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedCategory: null,
-      counter: 0,
-      loaded: false,
-      questionsArr: [],
-      timer: 10,
-      stop: false,
-      limit: 3,
-      defaultTimer: null
-    };
+    if(props.competeState){
+      console.log('Setting state from competeState, and that state is: ', props.competeState);
+
+      this.state = {...props.competeState,
+        competeState: true}
+
+    } else {
+      console.log('Setting initial state from values');
+      this.state = {
+        selectedCategory: null,
+        counter: 0,
+        loaded: false,
+        questionsArr: [],
+        timer: 0,
+        stop: false,
+        limit: 3,
+        defaultTimer: null
+      };
+    }
+
     this.categorySelect = this.categorySelect.bind(this);
     this.guessTheAnswer = this.guessTheAnswer.bind(this);
     this.loaded = this.loaded.bind(this);
@@ -119,30 +129,44 @@ class Compete extends Component {
       let data = result.val();
       this.setState({ defaultTimer: data.timer, limit: data.limit });
     });
-    const count = localStorage.getItem("counter");
-    const cat = localStorage.getItem("selectedCategory");
-    if (!count && !cat) {
-      localStorage.setItem("counter", "0");
-      localStorage.setItem("cat", " ");
+
+    if(this.state.competeState){
+      console.log('Compete state is true! Lets remove this question from you.');
+      this.guessTheAnswer('Changed back from other component');
     } else {
-      this.setState(() => {
-        return {
-          counter: Number(localStorage.getItem("counter")),
-          selectedCategory: localStorage.getItem("cat")
-        };
-      });
-      setTimeout(() => {
-        this.categorySelect("save");
-      }, 1000);
+      console.log('Regular game');
     }
+
+    // const count = localStorage.getItem("counter");
+    // const cat = localStorage.getItem("selectedCategory");
+    // if (!count && !cat) {
+    //   localStorage.setItem("counter", "0");
+    //   localStorage.setItem("cat", " ");
+    // } else {
+    //   this.setState(() => {
+    //     return {
+    //       counter: Number(localStorage.getItem("counter")),
+    //       selectedCategory: localStorage.getItem("cat")
+    //     };
+    //   });
+    //   setTimeout(() => {
+    //     this.categorySelect("save");
+    //   }, 1000);
+    // }
   }
 
   categorySelect(event) {
     this.stopTimer();
     let e;
     if (event === "save") {
-      e = localStorage.getItem("cat");
+      console.log('CAT GAME');
+      if(localStorage.getItem("cat")){
+        e = localStorage.getItem("cat");
+      } else {
+        return;
+      }
     } else if (event === "newGame") {
+      console.log('NEW GAME');
       e = this.state.selectedCategory;
     } else {
       e = event.target.value;
@@ -184,6 +208,7 @@ class Compete extends Component {
 
     }, 2000);
   }
+
   initializeTimer() {
     const defaultTimer = this.state.defaultTimer;
     // console.log("Starting timer.");
@@ -251,6 +276,12 @@ class Compete extends Component {
   componentWillUnmount() {
     this.stopTimer();
     console.log(this);
+    if(this.state.timer){
+      console.log('Quiz was unmounted while active. Saving state: ', this.state);
+      this.props.setCompeteState(this.state);
+    } else {
+      localStorage.setItem("cat", '');
+    }
       if(!this._unmounted) {
           if (this.state.selectedCategory) {
               localStorage.setItem("cat", this.state.selectedCategory);

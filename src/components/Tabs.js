@@ -46,6 +46,10 @@ class Tabs extends Component {
 
     }
 
+    setCompeteState = state => {
+      this.setState({competeState: state});
+    }
+
     render() {
         const tabs = this.props.tabs.map((tab, index) => {
             return <Tab tab={tab} key={index} onSelect={this.onSelect}/>;
@@ -54,7 +58,7 @@ class Tabs extends Component {
         let renderElement = null;
         switch (this.state.activeElement) {
             case 'compete':
-                renderElement = <Compete user={this.props.user} questions={this.state.questions}/>;
+                renderElement = <Compete setCompeteState={this.setCompeteState} competeState={this.state.competeState} user={this.props.user} questions={this.state.questions}/>;
                 break;
             case 'highscore':
                 renderElement = <Highscores />;
