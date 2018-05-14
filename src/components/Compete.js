@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { database } from '../firebase';
+import { database } from "../firebase";
 import "./css/Compete.css";
 
 function Counter(props) {
   return (
     <div className="Counter-wrapper">
-    <div className="timer"><span> {props.timer}</span></div>
+      <div className="timer">
+        <span> {props.timer}</span>
+      </div>
       <span className="counter-question">Question </span>
       <span className="counter">{props.counter + 1}</span>
       <span className="counter">of</span>
@@ -49,14 +51,14 @@ class Quiz extends Component {
 
 function Quizcard(props) {
   return (
-    <div
-
-      className={"quizCard-wrapper"}
-    >
+    <div className={"quizCard-wrapper"}>
       <div className={"quizCard" + (props.loaded ? " quizCardFlipped" : "")}>
-        <div className={"back"} onClick={() => {
-          props.guessTheAnswer(props.objKey);
-        }}>
+        <div
+          className={"back"}
+          onClick={() => {
+            props.guessTheAnswer(props.objKey);
+          }}
+        >
           <div className={"one" + (props.winner ? " winner" : "")}>
             <h1>{props.alternative}</h1>
           </div>
@@ -84,7 +86,7 @@ function ChooseCategory(props) {
       <div className="chooseCategory-wrapper">
         <span className="chooseCategory">Choose category </span>
         <div className="selectWrapper">
-        <select onChange={props.categorySelect}>{options}</select>
+          <select onChange={props.categorySelect}>{options}</select>
         </div>
       </div>
     );
@@ -112,39 +114,60 @@ class Compete extends Component {
     this.initializeTimer = this.initializeTimer.bind(this);
   }
 
-  componentDidMount(){
-    database.retrieveSettings()
-    .then(result => {
+  componentDidMount() {
+    database.retrieveSettings().then(result => {
       let data = result.val();
-      this.setState({defaultTimer: data.timer, limit: data.limit});
-    })
+      this.setState({ defaultTimer: data.timer, limit: data.limit });
+    });
+    const count = localStorage.getItem("counter");
+    const cat = localStorage.getItem("selectedCategory");
+    if (!count && !cat) {
+      localStorage.setItem("counter", "0");
+      localStorage.setItem("cat", " ");
+    } else {
+      this.setState(() => {
+        return {
+          counter: Number(localStorage.getItem("counter")),
+          selectedCategory: localStorage.getItem("cat")
+        };
+      });
+      setTimeout(() => {
+        this.categorySelect("save");
+      }, 1000);
+    }
+    console.log("LS Count", localStorage.getItem("counter"));
+    console.log("LS Category", localStorage.getItem("cat"));
   }
 
   categorySelect(event) {
     this.stopTimer();
     let e;
-    if (!event.target.value) {
+    if (event === "save") {
+      e = localStorage.getItem("cat");
+      localStorage.incrementTransaction("counter", 1);
+      this.handleLoss();
+    } else if (event === "newGame") {
       e = this.state.selectedCategory;
+      console.log(this.state.selectedCategory);
     } else {
-      e = event.target.value
+      e = event.target.value;
     }
     const randomSort2 = arr => {
-        let newArr = [];
-        while(newArr.length < arr.length){
-            var temp = parseInt( Math.random() * arr.length, 10);
-            if(newArr.includes(arr[temp])){
-              continue;
-            } else {
-              newArr.push(arr[temp]);
-            }
+      let newArr = [];
+      while (newArr.length < arr.length) {
+        const temp = parseInt(Math.random() * arr.length, 10);
+        if (newArr.includes(arr[temp])) {
+          continue;
+        } else {
+          newArr.push(arr[temp]);
         }
-        return newArr.slice(0, this.state.limit);
-    }
-
+      }
+      return newArr.slice(0, this.state.limit);
+    };
     const questionsArray = randomSort2(Object.values(this.props.questions[e]));
     this.setState({
       loaded: false,
-      counter: 0,
+      counter: event === "save" ? Number(localStorage.getItem("counter")) : 0,
       selectedCategory: e,
       questionsArr: questionsArray
     });
@@ -157,22 +180,22 @@ class Compete extends Component {
   }
   initializeTimer() {
     const defaultTimer = this.state.defaultTimer;
-    console.log('Starting timer.');
-    this.setState({stop: false});
-    this.setState({timer: defaultTimer});
+    console.log("Starting timer.");
+    this.setState({ stop: false });
+    this.setState({ timer: defaultTimer });
     const timer = setInterval(() => {
-      if(this.state.timer){
+      if (this.state.timer) {
         this.setState({ timer: this.state.timer - 1 });
       }
 
-      if(this.state.timer <= 0 || this.state.stop === true){
-        console.log('Timer stopped!!');
-        console.log('Timer is: ', this.state.timer);
-        console.log('Stop is: ', this.state.stop);
+      if (this.state.timer <= 0 || this.state.stop === true) {
+        console.log("Timer stopped!!");
+        console.log("Timer is: ", this.state.timer);
+        console.log("Stop is: ", this.state.stop);
 
         /* If timer is 0, guessTheAnswer */
-        if(this.state.timer <= 0 && !this.state.stop){
-          this.guessTheAnswer('Out of time!');
+        if (this.state.timer <= 0 && !this.state.stop) {
+          this.guessTheAnswer("Out of time!");
         }
         clearInterval(timer);
       }
@@ -180,18 +203,16 @@ class Compete extends Component {
   }
 
   stopTimer = () => {
-    this.setState({stop: true, timer: null});
-  }
+    this.setState({ stop: true, timer: null });
+  };
 
   guessTheAnswer(ans) {
     this.stopTimer();
     setTimeout(() => {
-
       /* Only start the timer again if there's questions left to answer! */
-      if(this.state.counter + 1 < this.state.questionsArr.length){
+      if (this.state.counter + 1 < this.state.questionsArr.length) {
         this.initializeTimer();
       }
-
       /* Increase the counter */
       this.setState({
         counter: this.state.counter + 1,
@@ -209,7 +230,8 @@ class Compete extends Component {
     } else {
       this.handleLoss();
     }
-
+    localStorage.setItem("counter", "" + this.state.counter);
+    console.log(localStorage.getItem("counter"));
     console.log("Counter", this.state.counter);
   }
 
@@ -225,8 +247,11 @@ class Compete extends Component {
   loaded() {
     this.setState({ loaded: true });
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.stopTimer();
+    if (this.state.selectedCategory) {
+      localStorage.setItem("cat", this.state.selectedCategory);
+    }
   }
   render() {
     return (
@@ -249,7 +274,14 @@ class Compete extends Component {
           )}
         {this.state.counter >= this.state.questionsArr.length &&
           this.state.selectedCategory && (
-            <button onClick={this.categorySelect} type="button">Play again</button>
+            <button
+              onClick={() => {
+                this.categorySelect("newGame");
+              }}
+              type="button"
+            >
+              Play again
+            </button>
           )}
       </div>
     );
